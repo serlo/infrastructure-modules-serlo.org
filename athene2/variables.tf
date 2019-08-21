@@ -152,3 +152,9 @@ variable "enable_mail_mock" {
   description = "mocks emails instead of sending them out"
   default     = false
 }
+
+variable "enable_basic_auth" {
+  type        = bool
+  description = "enables basic auth to avoid indexing"
+  default     = false
+}
