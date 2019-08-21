@@ -131,16 +131,6 @@ variable "image_pull_policy" {
   default     = "Always"
 }
 
-variable "varnish_service_name" {
-  type        = string
-  description = "name of the varnish service"
-}
-
-variable "varnish_service_port" {
-  type        = string
-  description = "port of the varnish service"
-}
-
 variable "editor_renderer_uri" {
   type        = string
   description = "connection uri for editor renderer"
@@ -149,12 +139,6 @@ variable "editor_renderer_uri" {
 variable "legacy_editor_renderer_uri" {
   type        = string
   description = "connection uri for legacy editor renderer"
-}
-
-variable "enable_basic_auth" {
-  type        = bool
-  description = "enables basic auth to avoid indexing"
-  default     = false
 }
 
 variable "enable_cronjobs" {
