@@ -1,5 +1,5 @@
 locals {
-  curl = "curl${var.enable_basic_auth ? " --user serloteam:serloteam" : ""} --data \"secret=${random_string.cronjob_secret.result}\""
+  curl = "curl${var.enable_basic_auth ? " --user serloteam:serloteam" : ""} --data \"secret=${random_string.cronjob_secret.result}\" --verbose"
 }
 
 resource "kubernetes_secret" "athene2_secret" {
