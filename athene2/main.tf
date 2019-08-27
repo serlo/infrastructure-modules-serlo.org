@@ -64,6 +64,15 @@ resource "kubernetes_deployment" "athene2_deployment" {
       }
 
       spec {
+        dns_policy = "None"
+        dns_config {
+          nameservers = ["8.8.8.8"]
+          option {
+            name  = "ndots"
+            value = 1
+          }
+        }
+
         #Webserver container
         container {
           image             = var.httpd_image
