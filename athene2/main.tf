@@ -266,9 +266,29 @@ resource "kubernetes_cron_job" "notification_worker_cronjob" {
             }
 
             container {
-              name    = "worker"
-              image   = "buildpack-deps:curl"
-              command = ["/bin/sh", "-c", "${local.curl} https://de.${var.domain}/notification/worker"]
+              name  = "worker"
+              image = var.notifications-job_image
+
+              env {
+                name  = "DB_HOST"
+                value = var.database_private_ip
+              }
+              env {
+                name  = "DB_USER"
+                value = var.database_username_readonly
+              }
+              env {
+                name  = "DB_PASSWORD"
+                value = var.database_password_readonly
+              }
+              env {
+                name  = "DB_DATABASE"
+                value = "serlo"
+              }
+              env {
+                name  = "JOB_SECRET"
+                value = random_string.cronjob_secret.result
+              }
             }
             restart_policy = "Never"
           }

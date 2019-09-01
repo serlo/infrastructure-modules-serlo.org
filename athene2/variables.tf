@@ -2,7 +2,6 @@
 # variables for module athene2
 #####################################################################
 variable "php_image" {
-  default     = "eu.gcr.io/serlo-shared/athene2-php:latest"
   description = "Docker image for athene2 php-application."
 }
 
@@ -15,8 +14,11 @@ variable "upload_secret" {
 }
 
 variable "httpd_image" {
-  default     = "eu.gcr.io/serlo-shared/athene2-httpd:latest"
   description = "Docker image for athene2 webserver."
+}
+
+variable "notifications-job_image" {
+  description = "Docker image for notifications job."
 }
 
 variable "domain" {
