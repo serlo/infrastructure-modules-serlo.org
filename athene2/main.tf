@@ -293,6 +293,14 @@ resource "kubernetes_cron_job" "notification_worker_cronjob" {
                 name  = "JOB_SECRET"
                 value = random_string.cronjob_secret.result
               }
+              env {
+                name  = "BASIC_AUTH_USERNAME"
+                value = var.enable_basic_auth ? "serloteam" : ""
+              }
+              env {
+                name  = "BASIC_AUTH_PASSWORD"
+                value = var.enable_basic_auth ? "serloteam" : ""
+              }
             }
             restart_policy = "Never"
           }
