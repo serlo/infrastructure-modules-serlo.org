@@ -270,6 +270,10 @@ resource "kubernetes_cron_job" "notification_worker_cronjob" {
               image = var.notifications-job_image
 
               env {
+                name  = "SERVER_HOST"
+                value = "https://de.${var.domain}"
+              }
+              env {
                 name  = "DB_HOST"
                 value = var.database_private_ip
               }
