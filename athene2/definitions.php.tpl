@@ -42,8 +42,8 @@ $recaptcha = [
 ];
 
 $smtp_options = [
-    'name' => 'smtp.sparkpostmail.com',
-    'host' => 'smtp.sparkpostmail.com',
+    'name' => 'smtp.eu.sparkpostmail.com',
+    'host' => 'smtp.eu.sparkpostmail.com',
     'port' => 2525,
     'connection_class' => 'login',
     'connection_config' => [
@@ -112,6 +112,3 @@ EOL;
 } else {
     $tracking = [];
 }
-
-
-
