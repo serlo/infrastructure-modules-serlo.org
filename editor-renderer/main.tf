@@ -77,3 +77,6 @@ resource "kubernetes_deployment" "editor-renderer_deployment" {
   }
 }
 
+provider "kubernetes" {
+  version = "~> 1.8"
+}

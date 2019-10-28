@@ -106,3 +106,11 @@ resource "null_resource" "serlo_database_setup" {
     command = "bash -c '${path.module}/setup-athene2-db.sh'"
   }
 }
+
+provider "kubernetes" {
+  version = "~> 1.8"
+}
+
+provider "null" {
+  version = "~> 2.1"
+}

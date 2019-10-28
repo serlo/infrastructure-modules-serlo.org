@@ -383,3 +383,15 @@ data "template_file" override_httpd_conf_template {
   vars = {
   }
 }
+
+provider "kubernetes" {
+  version = "~> 1.8"
+}
+
+provider "random" {
+  version = "~> 2.2"
+}
+
+provider "template" {
+  version = "~> 2.1"
+}

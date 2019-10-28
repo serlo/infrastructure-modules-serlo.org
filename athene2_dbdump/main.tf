@@ -93,3 +93,7 @@ resource "kubernetes_secret" "dbdump_secret" {
 
   type = "Opaque"
 }
+
+provider "kubernetes" {
+  version = "~> 1.8"
+}
