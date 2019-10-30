@@ -134,8 +134,7 @@ resource "kubernetes_deployment" "athene2_deployment" {
 
           liveness_probe {
             exec {
-              command = ["/bin/bash", "-c", "curl http://localhost/health.php -f"]
-
+              command = ["/bin/bash", "-c", "curl http://localhost/health.php -f && curl ${var.legacy_editor_renderer_uri} && curl ${var.editor_renderer_uri}"]
             }
             initial_delay_seconds = 30
             period_seconds        = 30
@@ -144,7 +143,6 @@ resource "kubernetes_deployment" "athene2_deployment" {
           readiness_probe {
             exec {
               command = ["/bin/bash", "-c", "curl --resolve 'de.localhost:80:127.0.0.1' http://de.localhost/mathe -f"]
-
             }
             initial_delay_seconds = 5
             period_seconds        = 120
