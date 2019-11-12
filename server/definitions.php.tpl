@@ -32,8 +32,8 @@ $assets = [
 $db = [
     'host' => '${php_db_host}',
     'port' => '3306',
-    'username' => getenv("DATABASE_USERNAME"),
-    'password' => getenv("DATABASE_PASSWORD"),
+    'username' => '${database_username}',
+    'password' => '${database_password}',
     'database' => 'serlo',
 ];
 
