@@ -369,6 +369,7 @@ data "template_file" definitions_php_template {
     php_db_host                = var.database_private_ip
     legacy_editor_renderer_uri = var.legacy_editor_renderer_uri
     editor_renderer_uri        = var.editor_renderer_uri
+    hydra_uri                  = var.hydra_uri
     cronjob_secret             = random_string.cronjob_secret.result
     enable_mail_mock           = var.enable_mail_mock
     upload_secret              = var.upload_secret

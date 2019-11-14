@@ -143,6 +143,11 @@ variable "legacy_editor_renderer_uri" {
   description = "connection uri for legacy editor renderer"
 }
 
+variable "hydra_uri" {
+  type        = string
+  description = "connection uri for hydra"
+}
+
 variable "enable_cronjobs" {
   type        = bool
   description = "enables athene2 cronjob (notification worker & session gc)"
