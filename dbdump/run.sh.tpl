@@ -37,10 +37,10 @@ log_info "dump database schema"
 mysqldump $connect --no-data --lock-tables=false --add-drop-database serlo >dump.sql
 
 log_info "dump database data"
-mysqldump $connect --no-create-info --lock-tables=false --add-locks --ignore-table=serlo.session serlo >> dump.sql
+mysqldump $connect --no-create-info --lock-tables=false --add-locks --ignore-table=serlo.session --ignore-table=serlo.user_field >> dump.sql
 
 log_info "anonymize database dump"
-sed -i -r "/([0-9]+, ?)'[^']+\@[^']+', ?'[^']+', ?'[^']+',( ?[0-9]+, ?'[^']+', ?[0-9], ?)'[^']+'/ s//\1CONCAT\(LEFT\(UUID\(\), 8\),'@localhost'\), LEFT\(UUID\(\), 8\), '8a534960a8a4c8e348150a0ae3c7f4b857bfead4f02c8cbf0d',\2LEFT\(UUID\(\), 8\)/" dump.sql
+sed -i -r "/([0-9]+, ?)'[^']+\@[^']+',( ?'[^']+', ?)'[^']+',( ?[0-9]+, ?'[^']+', ?)'[^']+'/ s//\1CONCAT\(LEFT\(UUID\(\), 8\),'@localhost'\),\2'8a534960a8a4c8e348150a0ae3c7f4b857bfead4f02c8cbf0d',\3LEFT\(UUID\(\), 8\)/" dump.sql
 
 log_info "compress database dump"
 rm -f *.zip
