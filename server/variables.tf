@@ -22,6 +22,11 @@ variable "domain" {
   type        = string
 }
 
+variable "feature_flags" {
+  description = "Configures feature flags"
+  type        = string
+}
+
 ### REVIEW
 
 variable "php_definitions-file_path" {

@@ -23,6 +23,8 @@
 
 $env = 'production';
 
+$featureFlags = ${feature_flags};
+
 $assets = [
     'legacy_editor_renderer' => '${legacy_editor_renderer_uri}',
     'editor_renderer' => '${editor_renderer_uri}',

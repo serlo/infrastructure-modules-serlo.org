@@ -329,6 +329,7 @@ data "template_file" definitions_php_template {
     upload_secret              = var.upload_secret
     database_username          = var.database_username_default
     database_password          = var.database_password_default
+    feature_flags              = var.feature_flags
   }
 }
 

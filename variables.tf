@@ -43,6 +43,8 @@ variable "server" {
     })
 
     upload_secret = string
+    feature_flags = string
+    hydra_uri     = string
   })
 }
 

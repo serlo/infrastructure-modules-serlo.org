@@ -35,6 +35,7 @@ module "server" {
 
   legacy_editor_renderer_uri = module.legacy_editor_renderer.service_uri
   editor_renderer_uri        = module.editor_renderer.service_uri
+  hydra_uri                  = var.server.hydra_uri
 
   enable_basic_auth = true
   enable_cronjobs   = true
@@ -42,6 +43,8 @@ module "server" {
 
   database_username_default  = "serlo"
   database_username_readonly = "serlo_readonly"
+
+  feature_flags = var.server.feature_flags
 
   providers = {
     kubernetes = "kubernetes"
