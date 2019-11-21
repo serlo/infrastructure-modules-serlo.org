@@ -133,9 +133,9 @@ variable "legacy_editor_renderer_uri" {
   description = "connection uri for legacy editor renderer"
 }
 
-variable "hydra_uri" {
+variable "hydra_admin_uri" {
   type        = string
-  description = "connection uri for hydra"
+  description = "connection uri for hydra admin"
 }
 
 variable "enable_cronjobs" {

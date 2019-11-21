@@ -42,9 +42,9 @@ variable "server" {
       password = string
     })
 
-    upload_secret = string
-    feature_flags = string
-    hydra_uri     = string
+    upload_secret   = string
+    feature_flags   = string
+    hydra_admin_uri = string
   })
 }
 

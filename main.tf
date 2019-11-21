@@ -35,7 +35,7 @@ module "server" {
 
   legacy_editor_renderer_uri = module.legacy_editor_renderer.service_uri
   editor_renderer_uri        = module.editor_renderer.service_uri
-  hydra_uri                  = var.server.hydra_uri
+  hydra_admin_uri            = var.server.hydra_admin_uri
 
   enable_basic_auth = true
   enable_cronjobs   = true

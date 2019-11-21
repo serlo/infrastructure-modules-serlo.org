@@ -28,7 +28,7 @@ $featureFlags = ${feature_flags};
 $assets = [
     'legacy_editor_renderer' => '${legacy_editor_renderer_uri}',
     'editor_renderer' => '${editor_renderer_uri}',
-    'hydra' => '${hydra_uri}',
+    'hydra' => '${hydra_admin_uri}',
 ];
 
 $db = [
