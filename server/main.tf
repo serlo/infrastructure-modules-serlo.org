@@ -1,27 +1,17 @@
 locals {
+  name = "server"
   curl = "curl${var.enable_basic_auth ? " --user serloteam:serloteam" : ""} --data \"secret=${random_string.cronjob_secret.result}\" --verbose"
 }
 
-resource "kubernetes_secret" "athene2_secret" {
+resource "kubernetes_service" "server" {
   metadata {
-    name      = "athene2-secret"
-    namespace = var.namespace
-  }
-
-  data = {
-    "definitions-file" = data.template_file.definitions_php_template.rendered
-  }
-}
-
-resource "kubernetes_service" "athene2_service" {
-  metadata {
-    name      = "athene2-service"
+    name      = local.name
     namespace = var.namespace
   }
 
   spec {
     selector = {
-      "app" = kubernetes_deployment.athene2_deployment.metadata.0.labels.app
+      app = local.name
     }
 
     port {
@@ -33,13 +23,13 @@ resource "kubernetes_service" "athene2_service" {
   }
 }
 
-resource "kubernetes_deployment" "athene2_deployment" {
+resource "kubernetes_deployment" "server" {
   metadata {
-    name      = "athene2-app"
+    name      = local.name
     namespace = var.namespace
 
     labels = {
-      "app" = "athene2"
+      app = local.name
     }
   }
 
@@ -48,7 +38,7 @@ resource "kubernetes_deployment" "athene2_deployment" {
 
     selector {
       match_labels = {
-        "app" = "athene2"
+        app = local.name
       }
     }
 
@@ -59,24 +49,14 @@ resource "kubernetes_deployment" "athene2_deployment" {
     template {
       metadata {
         labels = {
-          "app" = "athene2"
+          app = local.name
         }
       }
 
       spec {
-        dns_policy = "None"
-        dns_config {
-          nameservers = ["8.8.8.8"]
-          option {
-            name  = "ndots"
-            value = 1
-          }
-        }
-
-        #Webserver container
         container {
-          image             = var.httpd_image
-          name              = "athene2-httpd-container"
+          image             = var.images.httpd
+          name              = "httpd"
           image_pull_policy = var.image_pull_policy
 
           port {
@@ -86,6 +66,11 @@ resource "kubernetes_deployment" "athene2_deployment" {
           env {
             name  = "PHP_HOST"
             value = "localhost"
+          }
+
+          env {
+            name  = "HTTP_OVERRIDE_CONF_CHECKSUM"
+            value = sha256(data.template_file.override_httpd_conf_template.rendered)
           }
 
           resources {
@@ -108,20 +93,14 @@ resource "kubernetes_deployment" "athene2_deployment" {
           }
         }
 
-        #PHP container
         container {
-          image             = var.php_image
-          name              = "athene2-php-container"
+          image             = var.images.php
+          name              = "php"
           image_pull_policy = var.image_pull_policy
 
           env {
-            name  = "DATABASE_USERNAME"
-            value = var.database_username_default
-          }
-
-          env {
-            name  = "DATABASE_PASSWORD"
-            value = var.database_password_default
+            name  = "DEFINITIONS_PHP_CHECKSUM"
+            value = sha256(data.template_file.definitions_php_template.rendered)
           }
 
           lifecycle {
@@ -175,7 +154,7 @@ resource "kubernetes_deployment" "athene2_deployment" {
           name = "definitions-volume"
 
           secret {
-            secret_name = kubernetes_secret.athene2_secret.metadata.0.name
+            secret_name = kubernetes_secret.server.metadata.0.name
 
             items {
               key  = "definitions-file"
@@ -184,29 +163,16 @@ resource "kubernetes_deployment" "athene2_deployment" {
             }
           }
         }
+
         volume {
           name = "httpd-override-conf-volume"
 
           config_map {
-            name = "athene2-conf"
+            name = local.name
 
             items {
               key  = "httpd-override.conf"
               path = "httpd-override.conf"
-              mode = "0444"
-            }
-          }
-        }
-
-        volume {
-          name = "www-conf-volume"
-
-          config_map {
-            name = "athene2-conf"
-
-            items {
-              key  = "www.conf"
-              path = "www.conf"
               mode = "0444"
             }
           }
@@ -216,31 +182,15 @@ resource "kubernetes_deployment" "athene2_deployment" {
   }
 }
 
-resource "kubernetes_config_map" "athene2_conf" {
-  metadata {
-    name      = "athene2-conf"
-    namespace = var.namespace
-
-    labels = {
-      "app" = "athene2"
-    }
-  }
-
-  data = {
-    "httpd-override.conf" = data.template_file.override_httpd_conf_template.rendered
-    "www.conf"            = file("${path.module}/www.conf")
-  }
-}
-
-resource "kubernetes_cron_job" "notification_worker_cronjob" {
+resource "kubernetes_cron_job" "notifications" {
   count = var.enable_cronjobs ? 1 : 0
 
   metadata {
-    name      = "notification-worker-cronjob"
+    name      = "notifications"
     namespace = var.namespace
 
     labels = {
-      "app" = "athene2"
+      app = local.name
     }
   }
 
@@ -254,18 +204,9 @@ resource "kubernetes_cron_job" "notification_worker_cronjob" {
         template {
           metadata {}
           spec {
-            dns_policy = "None"
-            dns_config {
-              nameservers = ["8.8.8.8"]
-              option {
-                name  = "ndots"
-                value = 1
-              }
-            }
-
             container {
               name  = "worker"
-              image = var.notifications-job_image
+              image = var.images.notifications_job
 
               env {
                 name  = "SERVER_HOST"
@@ -308,15 +249,15 @@ resource "kubernetes_cron_job" "notification_worker_cronjob" {
   }
 }
 
-resource "kubernetes_cron_job" "session_gc_cronjob" {
+resource "kubernetes_cron_job" "session_gc" {
   count = var.enable_cronjobs ? 1 : 0
 
   metadata {
-    name      = "session-gc-cronjob"
+    name      = "session-gc"
     namespace = var.namespace
 
     labels = {
-      "app" = "athene2"
+      app = local.name
     }
   }
 
@@ -330,15 +271,6 @@ resource "kubernetes_cron_job" "session_gc_cronjob" {
         template {
           metadata {}
           spec {
-            dns_policy = "None"
-            dns_config {
-              nameservers = ["8.8.8.8"]
-              option {
-                name  = "ndots"
-                value = 1
-              }
-            }
-
             container {
               name    = "worker"
               image   = "buildpack-deps:curl"
@@ -352,13 +284,35 @@ resource "kubernetes_cron_job" "session_gc_cronjob" {
   }
 }
 
+resource "kubernetes_secret" "server" {
+  metadata {
+    name      = local.name
+    namespace = var.namespace
+  }
+
+  data = {
+    "definitions-file" = data.template_file.definitions_php_template.rendered
+  }
+}
+
+resource "kubernetes_config_map" "server" {
+  metadata {
+    name      = local.name
+    namespace = var.namespace
+  }
+
+  data = {
+    "httpd-override.conf" = data.template_file.override_httpd_conf_template.rendered
+  }
+}
+
 resource "random_string" "cronjob_secret" {
   length  = 32
   special = false
 }
 
 data "template_file" definitions_php_template {
-  template = "${file("${path.module}/definitions.php.tpl")}"
+  template = file("${path.module}/definitions.php.tpl")
 
   vars = {
     php_recaptcha_key          = var.php_recaptcha_key
@@ -369,18 +323,18 @@ data "template_file" definitions_php_template {
     php_db_host                = var.database_private_ip
     legacy_editor_renderer_uri = var.legacy_editor_renderer_uri
     editor_renderer_uri        = var.editor_renderer_uri
-    hydra_uri                  = var.hydra_uri
+    hydra_admin_uri            = var.hydra_admin_uri
     cronjob_secret             = random_string.cronjob_secret.result
     enable_mail_mock           = var.enable_mail_mock
     upload_secret              = var.upload_secret
+    database_username          = var.database_username_default
+    database_password          = var.database_password_default
+    feature_flags              = var.feature_flags
   }
 }
 
 data "template_file" override_httpd_conf_template {
-  template = "${file("${path.module}/override.httpd.conf.tpl")}"
-
-  vars = {
-  }
+  template = file("${path.module}/override.httpd.conf.tpl")
 }
 
 provider "kubernetes" {

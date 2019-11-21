@@ -23,17 +23,19 @@
 
 $env = 'production';
 
+$featureFlags = ${feature_flags};
+
 $assets = [
     'legacy_editor_renderer' => '${legacy_editor_renderer_uri}',
     'editor_renderer' => '${editor_renderer_uri}',
-    'hydra' => '${hydra_uri}',
+    'hydra' => '${hydra_admin_uri}',
 ];
 
 $db = [
     'host' => '${php_db_host}',
     'port' => '3306',
-    'username' => getenv("DATABASE_USERNAME"),
-    'password' => getenv("DATABASE_PASSWORD"),
+    'username' => '${database_username}',
+    'password' => '${database_password}',
     'database' => 'serlo',
 ];
 
