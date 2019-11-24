@@ -5,7 +5,7 @@ variable "namespace" {
 
 variable "dbsetup_image" {
   description = "image name of dbsetup"
-  default     = "eu.gcr.io/serlo-shared/athene2-dbsetup-cronjob:latest"
+  default     = "eu.gcr.io/serlo-shared/athene2-dbsetup-cronjob:1.2.0"
 }
 
 variable "image_pull_policy" {
