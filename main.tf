@@ -19,15 +19,15 @@ module "server" {
 
   app_replicas = var.server.app_replicas
 
-  httpd_container_limits_cpu      = "200m"
-  httpd_container_limits_memory   = "200Mi"
-  httpd_container_requests_cpu    = "100m"
-  httpd_container_requests_memory = "100Mi"
+  httpd_container_limits_cpu      = var.server.resources.httpd.limits.cpu
+  httpd_container_limits_memory   = var.server.resources.httpd.limits.memory
+  httpd_container_requests_cpu    = var.server.resources.httpd.requests.cpu
+  httpd_container_requests_memory = var.server.resources.httpd.requests.memory
 
-  php_container_limits_cpu      = "700m"
-  php_container_limits_memory   = "600Mi"
-  php_container_requests_cpu    = "400m"
-  php_container_requests_memory = "200Mi"
+  php_container_limits_cpu      = var.server.resources.php.limits.cpu
+  php_container_limits_memory   = var.server.resources.php.limits.memory
+  php_container_requests_cpu    = var.server.resources.php.requests.cpu
+  php_container_requests_memory = var.server.resources.php.requests.memory
 
   domain = var.server.domain
 
@@ -37,9 +37,9 @@ module "server" {
   editor_renderer_uri        = module.editor_renderer.service_uri
   hydra_admin_uri            = var.server.hydra_admin_uri
 
-  enable_basic_auth = true
-  enable_cronjobs   = true
-  enable_mail_mock  = true
+  enable_basic_auth = var.server.enable_basic_auth
+  enable_cronjobs   = var.server.enable_cronjobs
+  enable_mail_mock  = var.server.enable_mail_mock
 
   database_username_default  = "serlo"
   database_username_readonly = "serlo_readonly"
@@ -81,7 +81,7 @@ module "varnish" {
   app_replicas   = var.varnish.app_replicas
   backend_ip     = module.server.service_name
   image          = var.varnish.image
-  varnish_memory = "100M"
+  varnish_memory = var.varnish.memory
 
   resources_limits_cpu      = "50m"
   resources_limits_memory   = "100Mi"

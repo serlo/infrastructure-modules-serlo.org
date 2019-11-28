@@ -17,6 +17,28 @@ variable "server" {
       php               = string
       notifications_job = string
     })
+    resources = object({
+      httpd = object({
+        limits = object({
+          cpu    = string
+          memory = string
+        })
+        requests = object({
+          cpu    = string
+          memory = string
+        })
+      })
+      php = object({
+        limits = object({
+          cpu    = string
+          memory = string
+        })
+        requests = object({
+          cpu    = string
+          memory = string
+        })
+      })
+    })
 
     domain                = string
     definitions_file_path = string
@@ -29,7 +51,10 @@ variable "server" {
     smtp_password = string
     mailchimp_key = string
 
-    enable_tracking = bool
+    enable_tracking   = bool
+    enable_basic_auth = bool
+    enable_cronjobs   = bool
+    enable_mail_mock  = bool
 
     database = object({
       host     = string
@@ -69,5 +94,6 @@ variable "varnish" {
   type = object({
     app_replicas = number
     image        = string
+    memory       = string
   })
 }
