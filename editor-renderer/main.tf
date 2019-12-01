@@ -46,7 +46,7 @@ resource "kubernetes_deployment" "editor-renderer_deployment" {
 
       spec {
         container {
-          image             = var.image
+          image             = "eu.gcr.io/serlo-shared/serlo-org-editor-renderer:${var.image_tag}"
           name              = "editor-renderer-container"
           image_pull_policy = var.image_pull_policy
 

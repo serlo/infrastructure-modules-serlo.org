@@ -8,8 +8,8 @@ variable "image_pull_policy" {
   type        = string
 }
 
-variable "images" {
-  description = "Docker images to use"
+variable "image_tags" {
+  description = "Docker image tags to use"
   type = object({
     httpd             = string
     php               = string
@@ -126,6 +126,11 @@ variable "php_container_requests_memory" {
 variable "editor_renderer_uri" {
   type        = string
   description = "connection uri for editor renderer"
+}
+
+variable "frontend_uri" {
+  type        = string
+  description = "connection uri for frontend"
 }
 
 variable "legacy_editor_renderer_uri" {

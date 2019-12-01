@@ -1,12 +1,12 @@
-resource "kubernetes_service" "legacy-editor-renderer_service" {
+resource "kubernetes_service" "frontend_service" {
   metadata {
-    name      = "legacy-editor-renderer-service"
+    name      = "frontend-service"
     namespace = var.namespace
   }
 
   spec {
     selector = {
-      app = kubernetes_deployment.legacy-editor-renderer_deployment.metadata[0].labels.app
+      app = kubernetes_deployment.frontend_deployment.metadata[0].labels.app
     }
 
     port {
@@ -18,13 +18,13 @@ resource "kubernetes_service" "legacy-editor-renderer_service" {
   }
 }
 
-resource "kubernetes_deployment" "legacy-editor-renderer_deployment" {
+resource "kubernetes_deployment" "frontend_deployment" {
   metadata {
-    name      = "legacy-editor-renderer-app"
+    name      = "frontend-app"
     namespace = var.namespace
 
     labels = {
-      app = "legacy-editor-renderer"
+      app = "frontend"
     }
   }
 
@@ -33,26 +33,36 @@ resource "kubernetes_deployment" "legacy-editor-renderer_deployment" {
 
     selector {
       match_labels = {
-        app = "legacy-editor-renderer"
+        app = "frontend"
       }
     }
 
     template {
       metadata {
         labels = {
-          app = "legacy-editor-renderer"
+          app = "frontend"
         }
       }
 
       spec {
         container {
-          image             = "eu.gcr.io/serlo-shared/serlo-org-legacy-editor-renderer:${var.image_tag}"
-          name              = "legacy-editor-renderer-container"
+          image             = "eu.gcr.io/serlo-shared/serlo-org-frontend:${var.image_tag}"
+          name              = "frontend-container"
           image_pull_policy = var.image_pull_policy
+
+          env {
+            name  = "NEXT_ASSET_PREFIX"
+            value = "https://packages.serlo.org/serlo-org-frontend-assets@${var.image_tag}"
+          }
+
+          env {
+            name  = "ASSET_PREFIX"
+            value = "https://packages.serlo.org/serlo-org-frontend-assets@${var.image_tag}"
+          }
 
           liveness_probe {
             http_get {
-              path = "/"
+              path = "/__footer"
               port = 3000
             }
 

@@ -12,7 +12,7 @@ variable "server" {
   description = "Configuration for server"
   type = object({
     app_replicas = number
-    images = object({
+    image_tags = object({
       httpd             = string
       php               = string
       notifications_job = string
@@ -77,7 +77,7 @@ variable "editor_renderer" {
   description = "Configuration for editor renderer"
   type = object({
     app_replicas = number
-    image        = string
+    image_tag    = string
   })
 }
 
@@ -85,7 +85,15 @@ variable "legacy_editor_renderer" {
   description = "Configuration for legacy editor renderer"
   type = object({
     app_replicas = number
-    image        = string
+    image_tag    = string
+  })
+}
+
+variable "frontend" {
+  description = "Configuration for frontend"
+  type = object({
+    app_replicas = number
+    image_tag    = string
   })
 }
 

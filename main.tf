@@ -1,6 +1,6 @@
 module "server" {
-  source = "./server"
-  images = var.server.images
+  source     = "./server"
+  image_tags = var.server.image_tags
 
   namespace         = var.namespace
   image_pull_policy = var.image_pull_policy
@@ -33,8 +33,9 @@ module "server" {
 
   upload_secret = var.server.upload_secret
 
-  legacy_editor_renderer_uri = module.legacy_editor_renderer.service_uri
   editor_renderer_uri        = module.editor_renderer.service_uri
+  legacy_editor_renderer_uri = module.legacy_editor_renderer.service_uri
+  frontend_uri               = module.frontend.service_uri
   hydra_admin_uri            = var.server.hydra_admin_uri
 
   enable_basic_auth = var.server.enable_basic_auth
@@ -55,7 +56,7 @@ module "server" {
 
 module "editor_renderer" {
   source       = "./editor-renderer"
-  image        = var.editor_renderer.image
+  image_tag    = var.editor_renderer.image_tag
   namespace    = var.namespace
   app_replicas = var.editor_renderer.app_replicas
 
@@ -66,9 +67,21 @@ module "editor_renderer" {
 
 module "legacy_editor_renderer" {
   source       = "./legacy-editor-renderer"
-  image        = var.legacy_editor_renderer.image
+  image_tag    = var.legacy_editor_renderer.image_tag
   namespace    = var.namespace
   app_replicas = var.legacy_editor_renderer.app_replicas
+
+  providers = {
+    kubernetes = "kubernetes"
+  }
+}
+
+module "frontend" {
+  source            = "./frontend"
+  image_tag         = var.frontend.image_tag
+  image_pull_policy = var.image_pull_policy
+  namespace         = var.namespace
+  app_replicas      = var.frontend.app_replicas
 
   providers = {
     kubernetes = "kubernetes"

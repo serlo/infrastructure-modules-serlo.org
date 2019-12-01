@@ -1,48 +1,47 @@
 #####################################################################
-# variables for module editor-renderer
+# variables for module legacy-editor-renderer
 #####################################################################
 variable "image_tag" {
-  description = "Docker image tag for editor-renderer."
-  type        = string
+  description = "Docker image tag for frontend."
+  type        = "string"
 }
 
 variable "namespace" {
-  default     = "athene2"
-  description = "Namespace for all resources inside module editor-renderer."
+  description = "Namespace for all resources inside module frontend."
+  type        = string
 }
 
 variable "image_pull_policy" {
-  type        = string
   description = "image pull policy usually Always for minikube should be set to Never"
-  default     = "Always"
+  type        = string
 }
 
 variable "container_limits_cpu" {
-  type        = string
   description = "resources limits cpu for container"
+  type        = string
   default     = "500m"
 }
 
 variable "container_limits_memory" {
-  type        = string
   description = "resources limits memory for container"
+  type        = string
   default     = "200Mi"
 }
 
 variable "container_requests_cpu" {
-  type        = string
   description = "resources requests cpu for container"
+  type        = string
   default     = "250m"
 }
 
 variable "container_requests_memory" {
-  type        = string
   description = "resources requests memory for container"
+  type        = string
   default     = "100Mi"
 }
 
 variable "app_replicas" {
-  type        = number
   description = "number of replicas in the cluster"
+  type        = number
   default     = 1
 }

@@ -55,7 +55,7 @@ resource "kubernetes_deployment" "server" {
 
       spec {
         container {
-          image             = var.images.httpd
+          image             = "eu.gcr.io/serlo-shared/serlo-org-httpd:${var.image_tags.httpd}"
           name              = "httpd"
           image_pull_policy = var.image_pull_policy
 
@@ -94,7 +94,7 @@ resource "kubernetes_deployment" "server" {
         }
 
         container {
-          image             = var.images.php
+          image             = "eu.gcr.io/serlo-shared/serlo-org-php:${var.image_tags.php}"
           name              = "php"
           image_pull_policy = var.image_pull_policy
 
@@ -206,7 +206,7 @@ resource "kubernetes_cron_job" "notifications" {
           spec {
             container {
               name  = "worker"
-              image = var.images.notifications_job
+              image = "eu.gcr.io/serlo-shared/serlo-org-notifications-job:${var.image_tags.notifications_job}"
 
               env {
                 name  = "SERVER_HOST"
@@ -321,8 +321,9 @@ data "template_file" definitions_php_template {
     php_newsletter_key         = var.php_newsletter_key
     php_tracking_switch        = var.php_tracking_switch
     php_db_host                = var.database_private_ip
-    legacy_editor_renderer_uri = var.legacy_editor_renderer_uri
     editor_renderer_uri        = var.editor_renderer_uri
+    legacy_editor_renderer_uri = var.legacy_editor_renderer_uri
+    frontend_uri               = var.frontend_uri
     hydra_admin_uri            = var.hydra_admin_uri
     cronjob_secret             = random_string.cronjob_secret.result
     enable_mail_mock           = var.enable_mail_mock

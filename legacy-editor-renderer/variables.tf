@@ -1,9 +1,9 @@
 #####################################################################
 # variables for module legacy-editor-renderer
 #####################################################################
-variable "image" {
-  default     = "eu.gcr.io/serlo-shared/legacy-editor-renderer:latest"
+variable "image_tag" {
   description = "Docker image for legacy-editor-renderer."
+  type        = string
 }
 
 variable "namespace" {
