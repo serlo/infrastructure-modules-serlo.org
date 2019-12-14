@@ -113,7 +113,7 @@ resource "kubernetes_deployment" "server" {
 
           liveness_probe {
             exec {
-              command = ["/bin/bash", "-c", "curl http://localhost/health.php -f && curl ${var.legacy_editor_renderer_uri} && curl ${var.editor_renderer_uri}"]
+              command = ["/bin/bash", "-c", "curl http://localhost/health.php -f && curl ${var.legacy_editor_renderer_uri} && curl ${var.editor_renderer_uri} && curl ${var.frontend_uri}"]
             }
             initial_delay_seconds = 30
             period_seconds        = 30

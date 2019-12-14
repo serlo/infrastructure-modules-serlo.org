@@ -3,7 +3,7 @@
 #####################################################################
 variable "image_tag" {
   description = "Docker image tag for frontend."
-  type        = "string"
+  type        = string
 }
 
 variable "namespace" {

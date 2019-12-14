@@ -62,7 +62,7 @@ resource "kubernetes_deployment" "frontend_deployment" {
 
           liveness_probe {
             http_get {
-              path = "/__footer"
+              path = "/"
               port = 3000
             }
 

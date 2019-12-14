@@ -48,9 +48,9 @@ module "server" {
   feature_flags = var.server.feature_flags
 
   providers = {
-    kubernetes = "kubernetes"
-    random     = "random"
-    template   = "template"
+    kubernetes = kubernetes
+    random     = random
+    template   = template
   }
 }
 
@@ -61,7 +61,7 @@ module "editor_renderer" {
   app_replicas = var.editor_renderer.app_replicas
 
   providers = {
-    kubernetes = "kubernetes"
+    kubernetes = kubernetes
   }
 }
 
@@ -72,7 +72,7 @@ module "legacy_editor_renderer" {
   app_replicas = var.legacy_editor_renderer.app_replicas
 
   providers = {
-    kubernetes = "kubernetes"
+    kubernetes = kubernetes
   }
 }
 
@@ -84,12 +84,12 @@ module "frontend" {
   app_replicas      = var.frontend.app_replicas
 
   providers = {
-    kubernetes = "kubernetes"
+    kubernetes = kubernetes
   }
 }
 
 module "varnish" {
-  source         = "github.com/serlo/infrastructure-modules-shared.git//varnish?ref=02e58fdcdf0c83d9f99d7e6ca5911768149755a5"
+  source         = "github.com/serlo/infrastructure-modules-shared.git//varnish?ref=86fa9688de6dbde14799c484ca5de655df51c12d"
   namespace      = var.namespace
   app_replicas   = var.varnish.app_replicas
   backend_ip     = module.server.service_name
@@ -102,8 +102,8 @@ module "varnish" {
   resources_requests_memory = "100Mi"
 
   providers = {
-    kubernetes = "kubernetes"
-    template   = "template"
+    kubernetes = kubernetes
+    template   = template
   }
 }
 
