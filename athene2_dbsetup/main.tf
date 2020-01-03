@@ -96,17 +96,6 @@ resource "kubernetes_secret" "dbsetup_secret" {
   type = "Opaque"
 }
 
-resource "null_resource" "serlo_database_setup" {
-  triggers = {
-    version = kubernetes_deployment.dbsetup-cronjob.metadata[0].resource_version
-  }
-  count      = var.feature_minikube ? 1 : 0
-  depends_on = [kubernetes_deployment.dbsetup-cronjob]
-  provisioner "local-exec" {
-    command = "bash -c '${path.module}/setup-athene2-db.sh'"
-  }
-}
-
 provider "kubernetes" {
   version = "~> 1.8"
 }
