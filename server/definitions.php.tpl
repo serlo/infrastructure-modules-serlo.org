@@ -24,7 +24,9 @@
 $env = 'production';
 
 $featureFlags = ${feature_flags};
-
+$keyValueStore = [
+    'hosts' => ${redis_hosts},
+];
 $assets = [];
 
 $services = [

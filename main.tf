@@ -46,6 +46,7 @@ module "server" {
   database_username_readonly = "serlo_readonly"
 
   feature_flags = var.server.feature_flags
+  redis_hosts   = var.server.redis_hosts
 
   providers = {
     kubernetes = kubernetes

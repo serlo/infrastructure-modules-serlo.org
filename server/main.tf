@@ -331,6 +331,7 @@ data "template_file" definitions_php_template {
     database_username          = var.database_username_default
     database_password          = var.database_password_default
     feature_flags              = var.feature_flags
+    redis_hosts                = var.redis_hosts
   }
 }
 

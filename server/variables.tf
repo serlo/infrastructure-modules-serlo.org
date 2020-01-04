@@ -27,6 +27,11 @@ variable "feature_flags" {
   type        = string
 }
 
+variable "redis_hosts" {
+  description = "Redis hosts to use"
+  type        = string
+}
+
 ### REVIEW
 
 variable "php_definitions-file_path" {
