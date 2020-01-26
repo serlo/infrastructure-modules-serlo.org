@@ -95,11 +95,3 @@ resource "kubernetes_secret" "dbsetup_secret" {
 
   type = "Opaque"
 }
-
-provider "kubernetes" {
-  version = "~> 1.8"
-}
-
-provider "null" {
-  version = "~> 2.1"
-}

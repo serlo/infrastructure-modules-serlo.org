@@ -47,12 +47,6 @@ module "server" {
 
   feature_flags = var.server.feature_flags
   redis_hosts   = var.server.redis_hosts
-
-  providers = {
-    kubernetes = kubernetes
-    random     = random
-    template   = template
-  }
 }
 
 module "editor_renderer" {
@@ -60,10 +54,6 @@ module "editor_renderer" {
   image_tag    = var.editor_renderer.image_tag
   namespace    = var.namespace
   app_replicas = var.editor_renderer.app_replicas
-
-  providers = {
-    kubernetes = kubernetes
-  }
 }
 
 module "legacy_editor_renderer" {
@@ -71,10 +61,6 @@ module "legacy_editor_renderer" {
   image_tag    = var.legacy_editor_renderer.image_tag
   namespace    = var.namespace
   app_replicas = var.legacy_editor_renderer.app_replicas
-
-  providers = {
-    kubernetes = kubernetes
-  }
 }
 
 module "frontend" {
@@ -83,14 +69,11 @@ module "frontend" {
   image_pull_policy = var.image_pull_policy
   namespace         = var.namespace
   app_replicas      = var.frontend.app_replicas
-
-  providers = {
-    kubernetes = kubernetes
-  }
 }
 
 module "varnish" {
-  source         = "github.com/serlo/infrastructure-modules-shared.git//varnish?ref=86fa9688de6dbde14799c484ca5de655df51c12d"
+  source = "github.com/serlo/infrastructure-modules-shared.git//varnish?ref=d28dd79a40aa9452530c0e935b7e238f0cc0992d"
+
   namespace      = var.namespace
   app_replicas   = var.varnish.app_replicas
   backend_ip     = module.server.service_name
@@ -101,21 +84,4 @@ module "varnish" {
   resources_limits_memory   = "100Mi"
   resources_requests_cpu    = "50m"
   resources_requests_memory = "100Mi"
-
-  providers = {
-    kubernetes = kubernetes
-    template   = template
-  }
-}
-
-provider "kubernetes" {
-  version = "~> 1.8"
-}
-
-provider "random" {
-  version = "~> 2.2"
-}
-
-provider "template" {
-  version = "~> 2.1"
 }

@@ -86,7 +86,3 @@ resource "kubernetes_deployment" "frontend_deployment" {
     }
   }
 }
-
-provider "kubernetes" {
-  version = "~> 1.8"
-}

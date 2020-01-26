@@ -338,15 +338,3 @@ data "template_file" definitions_php_template {
 data "template_file" override_httpd_conf_template {
   template = file("${path.module}/override.httpd.conf.tpl")
 }
-
-provider "kubernetes" {
-  version = "~> 1.8"
-}
-
-provider "random" {
-  version = "~> 2.2"
-}
-
-provider "template" {
-  version = "~> 2.1"
-}
