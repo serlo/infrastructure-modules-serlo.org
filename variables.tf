@@ -70,6 +70,7 @@ variable "server" {
     upload_secret   = string
     feature_flags   = string
     redis_hosts     = string
+    kafka_host      = string
     hydra_admin_uri = string
   })
 }

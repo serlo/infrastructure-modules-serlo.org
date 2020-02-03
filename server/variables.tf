@@ -32,6 +32,11 @@ variable "redis_hosts" {
   type        = string
 }
 
+variable "kafka_host" {
+  description = "Kafka host to use"
+  type        = string
+}
+
 ### REVIEW
 
 variable "php_definitions-file_path" {
