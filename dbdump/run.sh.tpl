@@ -36,13 +36,13 @@ log_info "dump database schema"
 
 mysqldump $connect --no-data --lock-tables=false --add-drop-database serlo >dump.sql
 
-mysqldump $connect --no-create-info --lock-tables=false --add-locks serlo serlo.entity_revision >>dump.sql
-mysqldump $connect --no-create-info --lock-tables=false --add-locks serlo serlo.event >>dump.sql
-mysqldump $connect --no-create-info --lock-tables=false --add-locks serlo serlo.event_log >>dump.sql
-mysqldump $connect --no-create-info --lock-tables=false --add-locks serlo serlo.metadata >>dump.sql
-mysqldump $connect --no-create-info --lock-tables=false --add-locks serlo serlo.uuid >>dump.sql
+mysqldump $connect --no-create-info --lock-tables=false --add-locks serlo entity_revision >>dump.sql
+mysqldump $connect --no-create-info --lock-tables=false --add-locks serlo event >>dump.sql
+mysqldump $connect --no-create-info --lock-tables=false --add-locks serlo event_log >>dump.sql
+mysqldump $connect --no-create-info --lock-tables=false --add-locks serlo metadata >>dump.sql
+mysqldump $connect --no-create-info --lock-tables=false --add-locks serlo uuid >>dump.sql
 mysqldump $connect --no-create-info --lock-tables=false --add-locks --where "field = 'interests' and value = 'teacher'" serlo serlo.user_field >>dump.sql
-mysql $connect --batch -e "SELECT id, date, concat(@rn:=@rn+1, '') as email, last_login, logins, username, '8a534960a8a4c8e348150a0ae3c7f4b857bfead4f02c8cbf0d' AS password, concat(@rn:=@rn+1, '') as token, NULL as description FROM user, (select @rn:=2) r;" >user.csv
+mysql $connect --batch -e "SELECT id, date, concat(@rn:=@rn+1, '@localhost') as email, last_login, logins, username, '8a534960a8a4c8e348150a0ae3c7f4b857bfead4f02c8cbf0d' AS password, concat(@rn:=@rn+1, '') as token, NULL as description FROM user, (select @rn:=2) r;" serlo >user.csv
 
 log_info "compress database dump"
 rm -f *.zip
