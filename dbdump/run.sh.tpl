@@ -36,15 +36,17 @@ log_info "dump database schema"
 
 mysqldump $connect --no-data --lock-tables=false --add-drop-database serlo >dump.sql
 
-log_info "dump database data"
-mysqldump $connect --no-create-info --lock-tables=false --add-locks --ignore-table=serlo.session serlo >> dump.sql
-
-log_info "anonymize database dump"
-sed -i -r "/([0-9]+, ?)'[^']+\@[^']+',( ?'[^']+', ?)'[^']+',( ?[0-9]+, ?'[^']+', ?)'[^']+'/ s//\1CONCAT\(LEFT\(UUID\(\), 8\),'@localhost'\),\2'8a534960a8a4c8e348150a0ae3c7f4b857bfead4f02c8cbf0d',\3LEFT\(UUID\(\), 8\)/" dump.sql
+mysqldump $connect --no-create-info --lock-tables=false --add-locks serlo serlo.entity_revision >>dump.sql
+mysqldump $connect --no-create-info --lock-tables=false --add-locks serlo serlo.event >>dump.sql
+mysqldump $connect --no-create-info --lock-tables=false --add-locks serlo serlo.event_log >>dump.sql
+mysqldump $connect --no-create-info --lock-tables=false --add-locks serlo serlo.metadata >>dump.sql
+mysqldump $connect --no-create-info --lock-tables=false --add-locks serlo serlo.uuid >>dump.sql
+mysqldump $connect --no-create-info --lock-tables=false --add-locks --where "field = 'interests' and value = 'teacher'" serlo serlo.user_field >>dump.sql
+mysql $connect --batch -e "SELECT id, date, email, last_login, logins, username, '8a534960a8a4c8e348150a0ae3c7f4b857bfead4f02c8cbf0d' AS password, '12345678' as token, NULL as description FROM user;" >user.csv
 
 log_info "compress database dump"
 rm -f *.zip
-zip "dump-$(date -I)".zip dump.sql >/dev/null
+zip "dump-$(date -I)".zip dump.sql user.csv >/dev/null
 
 cat << EOF | gcloud auth activate-service-account --key-file=-
 ${bucket_service_account_key}
