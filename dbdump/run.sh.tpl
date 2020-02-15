@@ -42,7 +42,7 @@ mysqldump $connect --no-create-info --lock-tables=false --add-locks serlo event_
 mysqldump $connect --no-create-info --lock-tables=false --add-locks serlo metadata >>dump.sql
 mysqldump $connect --no-create-info --lock-tables=false --add-locks serlo uuid >>dump.sql
 mysqldump $connect --no-create-info --lock-tables=false --add-locks --where "field = 'interests' and value = 'teacher'" serlo serlo.user_field >>dump.sql
-mysql $connect --batch -e "SELECT id, date, concat(@rn:=@rn+1, '@localhost') as email, last_login, logins, username, '8a534960a8a4c8e348150a0ae3c7f4b857bfead4f02c8cbf0d' AS password, concat(@rn:=@rn+1, '') as token, NULL as description FROM user, (select @rn:=2) r;" serlo >user.csv
+mysql $connect --batch -e "SELECT id, concat(@rn:=@rn+1, '@localhost') as email, username, '8a534960a8a4c8e348150a0ae3c7f4b857bfead4f02c8cbf0d' AS password, logins, date, concat(@rn:=@rn+1, '') as token, last_login, NULL as description FROM user, (select @rn:=2) r;" serlo >user.csv
 
 log_info "compress database dump"
 rm -f *.zip
