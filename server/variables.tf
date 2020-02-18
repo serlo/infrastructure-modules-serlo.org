@@ -13,6 +13,7 @@ variable "image_tags" {
   type = object({
     httpd             = string
     php               = string
+    migrate           = string
     notifications_job = string
   })
 }

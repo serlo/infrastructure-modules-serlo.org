@@ -15,6 +15,7 @@ variable "server" {
     image_tags = object({
       httpd             = string
       php               = string
+      migrate           = string
       notifications_job = string
     })
     resources = object({

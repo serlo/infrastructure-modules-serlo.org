@@ -44,6 +44,11 @@ resource "kubernetes_deployment" "server" {
 
     strategy {
       type = "RollingUpdate"
+
+      rolling_update {
+        max_surge       = "1"
+        max_unavailable = "1"
+      }
     }
 
     template {
@@ -147,6 +152,17 @@ resource "kubernetes_deployment" "server" {
               cpu    = var.php_container_requests_cpu
               memory = var.php_container_requests_memory
             }
+          }
+        }
+
+        init_container {
+          image             = "eu.gcr.io/serlo-shared/serlo-org-migrate:${var.image_tags.migrate}"
+          name              = "migrate"
+          image_pull_policy = var.image_pull_policy
+
+          env {
+            name  = "DATABASE"
+            value = "mysql://${var.database_username_default}:${var.database_password_default}@${var.database_private_ip}:3306/serlo"
           }
         }
 
