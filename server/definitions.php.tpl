@@ -27,9 +27,6 @@ $featureFlags = ${feature_flags};
 $keyValueStore = [
     'hosts' => ${redis_hosts},
 ];
-$messageQueue = [
-    'host' => '${kafka_host}',
-];
 $assets = [];
 
 $services = [

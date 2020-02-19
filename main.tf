@@ -47,7 +47,6 @@ module "server" {
 
   feature_flags = var.server.feature_flags
   redis_hosts   = var.server.redis_hosts
-  kafka_host    = var.server.kafka_host
 }
 
 module "editor_renderer" {
