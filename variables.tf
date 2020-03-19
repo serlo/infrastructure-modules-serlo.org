@@ -70,7 +70,6 @@ variable "server" {
 
     upload_secret   = string
     feature_flags   = string
-    redis_hosts     = string
     hydra_admin_uri = string
   })
 }
@@ -85,14 +84,6 @@ variable "editor_renderer" {
 
 variable "legacy_editor_renderer" {
   description = "Configuration for legacy editor renderer"
-  type = object({
-    app_replicas = number
-    image_tag    = string
-  })
-}
-
-variable "frontend" {
-  description = "Configuration for frontend"
   type = object({
     app_replicas = number
     image_tag    = string

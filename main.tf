@@ -5,8 +5,6 @@ module "server" {
   namespace         = var.namespace
   image_pull_policy = var.image_pull_policy
 
-  php_definitions-file_path = var.server.definitions_file_path
-
   php_recaptcha_key    = var.server.recaptcha.key
   php_recaptcha_secret = var.server.recaptcha.secret
   php_smtp_password    = var.server.smtp_password
@@ -35,7 +33,6 @@ module "server" {
 
   editor_renderer_uri        = module.editor_renderer.service_uri
   legacy_editor_renderer_uri = module.legacy_editor_renderer.service_uri
-  frontend_uri               = module.frontend.service_uri
   hydra_admin_uri            = var.server.hydra_admin_uri
 
   enable_basic_auth = var.server.enable_basic_auth
@@ -46,7 +43,6 @@ module "server" {
   database_username_readonly = "serlo_readonly"
 
   feature_flags = var.server.feature_flags
-  redis_hosts   = var.server.redis_hosts
 }
 
 module "editor_renderer" {
@@ -61,14 +57,6 @@ module "legacy_editor_renderer" {
   image_tag    = var.legacy_editor_renderer.image_tag
   namespace    = var.namespace
   app_replicas = var.legacy_editor_renderer.app_replicas
-}
-
-module "frontend" {
-  source            = "./frontend"
-  image_tag         = var.frontend.image_tag
-  image_pull_policy = var.image_pull_policy
-  namespace         = var.namespace
-  app_replicas      = var.frontend.app_replicas
 }
 
 module "varnish" {

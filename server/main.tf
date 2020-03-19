@@ -118,7 +118,7 @@ resource "kubernetes_deployment" "server" {
 
           liveness_probe {
             exec {
-              command = ["/bin/bash", "-c", "curl http://localhost/health.php -f && curl ${var.legacy_editor_renderer_uri} && curl ${var.editor_renderer_uri} && curl ${var.frontend_uri}"]
+              command = ["/bin/bash", "-c", "curl http://localhost/health.php -f && curl ${var.legacy_editor_renderer_uri}"]
             }
             initial_delay_seconds = 30
             period_seconds        = 30
@@ -339,7 +339,6 @@ data "template_file" definitions_php_template {
     php_db_host                = var.database_private_ip
     editor_renderer_uri        = var.editor_renderer_uri
     legacy_editor_renderer_uri = var.legacy_editor_renderer_uri
-    frontend_uri               = var.frontend_uri
     hydra_admin_uri            = var.hydra_admin_uri
     cronjob_secret             = random_string.cronjob_secret.result
     enable_mail_mock           = var.enable_mail_mock
@@ -347,7 +346,6 @@ data "template_file" definitions_php_template {
     database_username          = var.database_username_default
     database_password          = var.database_password_default
     feature_flags              = var.feature_flags
-    redis_hosts                = var.redis_hosts
   }
 }
 
