@@ -41,8 +41,7 @@ variable "server" {
       })
     })
 
-    domain                = string
-    definitions_file_path = string
+    domain = string
 
     recaptcha = object({
       key    = string
