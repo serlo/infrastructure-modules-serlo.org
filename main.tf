@@ -60,7 +60,7 @@ module "legacy_editor_renderer" {
 }
 
 module "varnish" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//varnish?ref=d28dd79a40aa9452530c0e935b7e238f0cc0992d"
+  source = "github.com/serlo/infrastructure-modules-shared.git//varnish?ref=5a85fc7fdc78d9f61b92700d5a0a1b044ec0af67"
 
   namespace      = var.namespace
   app_replicas   = var.varnish.app_replicas
