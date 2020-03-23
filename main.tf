@@ -69,7 +69,7 @@ module "varnish" {
   varnish_memory = var.varnish.memory
 
   resources_limits_cpu      = "50m"
-  resources_limits_memory   = "100Mi"
+  resources_limits_memory   = var.varnish.memory
   resources_requests_cpu    = "50m"
   resources_requests_memory = "100Mi"
 }
