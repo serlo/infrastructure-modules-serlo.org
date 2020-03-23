@@ -15,6 +15,7 @@ variable "server" {
     image_tags = object({
       httpd             = string
       php               = string
+      migrate           = string
       notifications_job = string
     })
     resources = object({
@@ -40,8 +41,7 @@ variable "server" {
       })
     })
 
-    domain                = string
-    definitions_file_path = string
+    domain = string
 
     recaptcha = object({
       key    = string
@@ -83,14 +83,6 @@ variable "editor_renderer" {
 
 variable "legacy_editor_renderer" {
   description = "Configuration for legacy editor renderer"
-  type = object({
-    app_replicas = number
-    image_tag    = string
-  })
-}
-
-variable "frontend" {
-  description = "Configuration for frontend"
   type = object({
     app_replicas = number
     image_tag    = string

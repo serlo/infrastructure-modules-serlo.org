@@ -24,13 +24,11 @@
 $env = 'production';
 
 $featureFlags = ${feature_flags};
-
 $assets = [];
 
 $services = [
     'editor_renderer' => '${editor_renderer_uri}',
     'legacy_editor_renderer' => '${legacy_editor_renderer_uri}',
-    'frontend' => '${frontend_uri}',
     'hydra' => '${hydra_admin_uri}',
 ];
 

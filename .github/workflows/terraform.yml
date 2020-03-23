@@ -27,7 +27,6 @@ jobs:
           - athene2_metrics
           - dbdump
           - editor-renderer
-          - frontend
           - legacy-editor-renderer
           - server
           - .

@@ -13,6 +13,7 @@ variable "image_tags" {
   type = object({
     httpd             = string
     php               = string
+    migrate           = string
     notifications_job = string
   })
 }
@@ -29,15 +30,9 @@ variable "feature_flags" {
 
 ### REVIEW
 
-variable "php_definitions-file_path" {
-  description = "Path to definitions.php file (by default inside secrets-folder)."
-}
-
 variable "upload_secret" {
   description = "Service account key for file uploads"
 }
-
-
 
 variable "database_username_default" {
   description = "Default username for athene2 database."
@@ -126,11 +121,6 @@ variable "php_container_requests_memory" {
 variable "editor_renderer_uri" {
   type        = string
   description = "connection uri for editor renderer"
-}
-
-variable "frontend_uri" {
-  type        = string
-  description = "connection uri for frontend"
 }
 
 variable "legacy_editor_renderer_uri" {

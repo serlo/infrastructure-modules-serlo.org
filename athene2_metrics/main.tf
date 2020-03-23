@@ -68,7 +68,3 @@ resource "google_logging_metric" "logging_metric_dbdump_success" {
     value_type  = "INT64"
   }
 }
-
-provider "google" {
-  version = "~> 2.18"
-}

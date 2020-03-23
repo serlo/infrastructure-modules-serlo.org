@@ -5,8 +5,6 @@ module "server" {
   namespace         = var.namespace
   image_pull_policy = var.image_pull_policy
 
-  php_definitions-file_path = var.server.definitions_file_path
-
   php_recaptcha_key    = var.server.recaptcha.key
   php_recaptcha_secret = var.server.recaptcha.secret
   php_smtp_password    = var.server.smtp_password
@@ -35,7 +33,6 @@ module "server" {
 
   editor_renderer_uri        = module.editor_renderer.service_uri
   legacy_editor_renderer_uri = module.legacy_editor_renderer.service_uri
-  frontend_uri               = module.frontend.service_uri
   hydra_admin_uri            = var.server.hydra_admin_uri
 
   enable_basic_auth = var.server.enable_basic_auth
@@ -46,12 +43,6 @@ module "server" {
   database_username_readonly = "serlo_readonly"
 
   feature_flags = var.server.feature_flags
-
-  providers = {
-    kubernetes = kubernetes
-    random     = random
-    template   = template
-  }
 }
 
 module "editor_renderer" {
@@ -59,10 +50,6 @@ module "editor_renderer" {
   image_tag    = var.editor_renderer.image_tag
   namespace    = var.namespace
   app_replicas = var.editor_renderer.app_replicas
-
-  providers = {
-    kubernetes = kubernetes
-  }
 }
 
 module "legacy_editor_renderer" {
@@ -70,26 +57,11 @@ module "legacy_editor_renderer" {
   image_tag    = var.legacy_editor_renderer.image_tag
   namespace    = var.namespace
   app_replicas = var.legacy_editor_renderer.app_replicas
-
-  providers = {
-    kubernetes = kubernetes
-  }
-}
-
-module "frontend" {
-  source            = "./frontend"
-  image_tag         = var.frontend.image_tag
-  image_pull_policy = var.image_pull_policy
-  namespace         = var.namespace
-  app_replicas      = var.frontend.app_replicas
-
-  providers = {
-    kubernetes = kubernetes
-  }
 }
 
 module "varnish" {
-  source         = "github.com/serlo/infrastructure-modules-shared.git//varnish?ref=86fa9688de6dbde14799c484ca5de655df51c12d"
+  source = "github.com/serlo/infrastructure-modules-shared.git//varnish?ref=5a85fc7fdc78d9f61b92700d5a0a1b044ec0af67"
+
   namespace      = var.namespace
   app_replicas   = var.varnish.app_replicas
   backend_ip     = module.server.service_name
@@ -100,21 +72,4 @@ module "varnish" {
   resources_limits_memory   = "100Mi"
   resources_requests_cpu    = "50m"
   resources_requests_memory = "100Mi"
-
-  providers = {
-    kubernetes = kubernetes
-    template   = template
-  }
-}
-
-provider "kubernetes" {
-  version = "~> 1.8"
-}
-
-provider "random" {
-  version = "~> 2.2"
-}
-
-provider "template" {
-  version = "~> 2.1"
 }

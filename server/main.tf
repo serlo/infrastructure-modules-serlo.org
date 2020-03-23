@@ -44,6 +44,11 @@ resource "kubernetes_deployment" "server" {
 
     strategy {
       type = "RollingUpdate"
+
+      rolling_update {
+        max_surge       = "1"
+        max_unavailable = "1"
+      }
     }
 
     template {
@@ -113,7 +118,7 @@ resource "kubernetes_deployment" "server" {
 
           liveness_probe {
             exec {
-              command = ["/bin/bash", "-c", "curl http://localhost/health.php -f && curl ${var.legacy_editor_renderer_uri} && curl ${var.editor_renderer_uri} && curl ${var.frontend_uri}"]
+              command = ["/bin/bash", "-c", "curl http://localhost/health.php -f && curl ${var.legacy_editor_renderer_uri} && curl ${var.editor_renderer_uri}"]
             }
             initial_delay_seconds = 30
             period_seconds        = 30
@@ -147,6 +152,17 @@ resource "kubernetes_deployment" "server" {
               cpu    = var.php_container_requests_cpu
               memory = var.php_container_requests_memory
             }
+          }
+        }
+
+        init_container {
+          image             = "eu.gcr.io/serlo-shared/serlo-org-migrate:${var.image_tags.migrate}"
+          name              = "migrate"
+          image_pull_policy = var.image_pull_policy
+
+          env {
+            name  = "DATABASE"
+            value = "mysql://${var.database_username_default}:${var.database_password_default}@${var.database_private_ip}:3306/serlo"
           }
         }
 
@@ -323,7 +339,6 @@ data "template_file" definitions_php_template {
     php_db_host                = var.database_private_ip
     editor_renderer_uri        = var.editor_renderer_uri
     legacy_editor_renderer_uri = var.legacy_editor_renderer_uri
-    frontend_uri               = var.frontend_uri
     hydra_admin_uri            = var.hydra_admin_uri
     cronjob_secret             = random_string.cronjob_secret.result
     enable_mail_mock           = var.enable_mail_mock
@@ -336,16 +351,4 @@ data "template_file" definitions_php_template {
 
 data "template_file" override_httpd_conf_template {
   template = file("${path.module}/override.httpd.conf.tpl")
-}
-
-provider "kubernetes" {
-  version = "~> 1.8"
-}
-
-provider "random" {
-  version = "~> 2.2"
-}
-
-provider "template" {
-  version = "~> 2.1"
 }
