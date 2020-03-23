@@ -36,15 +36,16 @@ log_info "dump database schema"
 
 mysqldump $connect --no-data --lock-tables=false --add-drop-database serlo >dump.sql
 
-log_info "dump database data"
-mysqldump $connect --no-create-info --lock-tables=false --add-locks --ignore-table=serlo.session --ignore-table=serlo.user_field serlo >> dump.sql
-
-log_info "anonymize database dump"
-sed -i -r "/([0-9]+, ?)'[^']+\@[^']+',( ?'[^']+', ?)'[^']+',( ?[0-9]+, ?'[^']+', ?)'[^']+'/ s//\1CONCAT\(LEFT\(UUID\(\), 8\),'@localhost'\),\2'8a534960a8a4c8e348150a0ae3c7f4b857bfead4f02c8cbf0d',\3LEFT\(UUID\(\), 8\)/" dump.sql
+for table in ad ad_page attachment_container attachment_file blog_post comment comment_vote context context_route context_route_parameter entity entity_link entity_revision entity_revision_field event event_log event_parameter event_parameter_name event_parameter_string event_parameter_uuid flag instance instance_permission language license metadata metadata_key migrations navigation_container navigation_page navigation_parameter navigation_parameter_key notification notification_event page_repository page_repository_role page_revision permission related_content related_content_category related_content_container related_content_external related_content_internal role role_inheritance role_permission role_user session subscription taxonomy term term_taxonomy term_taxonomy_comment term_taxonomy_entity type url_alias uuid
+do
+    mysqldump $connect --no-create-info --lock-tables=false --add-locks serlo $table >>dump.sql
+done
+mysqldump $connect --no-create-info --lock-tables=false --add-locks --where "field = 'interests' and value = 'teacher'" serlo user_field >>dump.sql
+mysql $connect --batch -e "SELECT id, concat(@rn:=@rn+1, '@localhost') as email, username, '8a534960a8a4c8e348150a0ae3c7f4b857bfead4f02c8cbf0d' AS password, logins, date, concat(@rn:=@rn+1, '') as token, last_login, NULL as description FROM user, (select @rn:=2) r;" serlo >user.csv
 
 log_info "compress database dump"
 rm -f *.zip
-zip "dump-$(date -I)".zip dump.sql >/dev/null
+zip "dump-$(date -I)".zip dump.sql user.csv >/dev/null
 
 cat << EOF | gcloud auth activate-service-account --key-file=-
 ${bucket_service_account_key}
