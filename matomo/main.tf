@@ -51,6 +51,31 @@ resource "kubernetes_deployment" "matomo_deployment" {
           name              = "matomo-container"
           image_pull_policy = var.image_pull_policy
 
+          env {
+            name  = "MATOMO_DATABASE_HOST"
+            value = var.database_host
+          }
+
+          env {
+            name  = "MATOMO_DATABASE_USERNAME"
+            value = var.database_user
+          }
+
+          env {
+            name  = "MATOMO_DATABASE_DBNAME"
+            value = var.database_name
+          }
+
+          env {
+            name  = "MATOMO_DATABASE_PASSWORD"
+            value_from {
+              secret_key_ref {
+                key  = "database-password-default"
+                name = kubernetes_secret.matomo_secret.metadata[0].name
+              }
+            }
+          }
+
           liveness_probe {
             http_get {
               path = "/"
@@ -76,4 +101,18 @@ resource "kubernetes_deployment" "matomo_deployment" {
       }
     }
   }
+}
+
+resource "kubernetes_secret" "matomo_secret" {
+  metadata {
+    name      = "matomo-secret"
+    namespace = var.namespace
+  }
+
+  data = {
+    "database-password-default" = var.database_password_default
+    "credential.json"           = var.gcloud_service_account_key
+  }
+
+  type = "Opaque"
 }

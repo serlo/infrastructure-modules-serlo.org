@@ -55,7 +55,7 @@ module "editor_renderer" {
 
 module "matomo" {
   source       = "./matomo"
-  image_tag    =  var.matomo.image_tag
+  image_tag    = var.matomo.image_tag
   namespace    = var.namespace
   app_replicas = var.matomo.app_replicas
 }

@@ -46,3 +46,23 @@ variable "app_replicas" {
   description = "number of replicas in the cluster"
   default     = 1
 }
+
+variable "database_user" {
+  type        = string
+  default     = "matomo"
+  description = "Database username for default user that has also write privilege"
+}
+
+variable "database_password" {
+  description = "Database password for default user that has also write privilege"
+}
+
+variable "database_host" {
+  description = "Matomo database host"
+}
+
+variable "database_name" {
+  type        = string
+  default     = "matomo"
+  description = "Database name to use for matomo data"
+}
