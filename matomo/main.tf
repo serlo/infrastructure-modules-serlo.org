@@ -110,8 +110,7 @@ resource "kubernetes_secret" "matomo_secret" {
   }
 
   data = {
-    "database-password-default" = var.database_password_default
-    "credential.json"           = var.gcloud_service_account_key
+    "database-password-default" = var.database_password
   }
 
   type = "Opaque"
