@@ -87,6 +87,14 @@ variable "editor_renderer" {
   })
 }
 
+variable "matomo" {
+  description = "Configuration for Matomo"
+  type = object({
+    app_replicas = number
+    image_tag    = string
+  })
+}
+
 variable "legacy_editor_renderer" {
   description = "Configuration for legacy editor renderer"
   type = object({

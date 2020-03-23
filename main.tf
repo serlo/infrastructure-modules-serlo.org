@@ -53,6 +53,13 @@ module "editor_renderer" {
   app_replicas = var.editor_renderer.app_replicas
 }
 
+module "matomo" {
+  source       = "./matomo"
+  image_tag    =  var.matomo.image_tag
+  namespace    = var.namespace
+  app_replicas = var.matomo.app_replicas
+}
+
 module "legacy_editor_renderer" {
   source       = "./legacy-editor-renderer"
   image_tag    = var.legacy_editor_renderer.image_tag
