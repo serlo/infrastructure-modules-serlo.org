@@ -10,8 +10,8 @@ resource "kubernetes_service" "matomo_service" {
     }
 
     port {
-      port        = 3000
-      target_port = 3000
+      port        = 8080
+      target_port = 8080
     }
 
     type = "ClusterIP"
