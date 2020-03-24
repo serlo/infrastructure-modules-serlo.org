@@ -157,3 +157,8 @@ variable "enable_basic_auth" {
   type        = bool
   description = "enables basic auth to avoid indexing"
 }
+
+variable "matomo_tracking_domain" {
+  type        = string
+  description = "base domain name of the matomo tracking url"
+}

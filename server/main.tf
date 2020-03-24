@@ -349,6 +349,7 @@ data "template_file" definitions_php_template {
     api_cache_namespace        = var.api_cache.namespace
     api_cache_token            = var.api_cache.token
     feature_flags              = var.feature_flags
+    matomo_tracking_domain     = var.matomo_tracking_domain
   }
 }
 

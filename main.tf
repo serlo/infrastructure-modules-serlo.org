@@ -44,6 +44,8 @@ module "server" {
 
   api_cache     = var.server.api_cache
   feature_flags = var.server.feature_flags
+
+  matomo_tracking_domain = var.server.matomo_tracking_domain
 }
 
 module "editor_renderer" {
@@ -51,17 +53,6 @@ module "editor_renderer" {
   image_tag    = var.editor_renderer.image_tag
   namespace    = var.namespace
   app_replicas = var.editor_renderer.app_replicas
-}
-
-module "matomo" {
-  source            = "./matomo"
-  image_tag         = var.matomo.image_tag
-  namespace         = var.namespace
-  app_replicas      = var.matomo.app_replicas
-  database_user     = var.matomo.database_user
-  database_password = var.matomo.database_password
-  database_host     = var.matomo.database_host
-  database_name     = var.matomo.database_name
 }
 
 module "legacy_editor_renderer" {
