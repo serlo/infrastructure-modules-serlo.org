@@ -90,12 +90,12 @@ variable "editor_renderer" {
 variable "matomo" {
   description = "Configuration for Matomo"
   type = object({
-    app_replicas     = number
-    image_tag        = string
-    database_user    = string
-    databse_password = string
-    database_host    = string
-    database_name    = string
+    app_replicas      = number
+    image_tag         = string
+    database_user     = string
+    database_password = string
+    database_host     = string
+    database_name     = string
   })
 }
 
