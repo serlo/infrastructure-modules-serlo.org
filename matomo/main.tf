@@ -10,8 +10,8 @@ resource "kubernetes_service" "matomo_service" {
     }
 
     port {
-      port        = 8080
-      target_port = 8080
+      port        = 80
+      target_port = 80
     }
 
     type = "ClusterIP"
@@ -79,7 +79,7 @@ resource "kubernetes_deployment" "matomo_deployment" {
           liveness_probe {
             http_get {
               path = "/"
-              port = 3000
+              port = 80
             }
 
             initial_delay_seconds = 5
