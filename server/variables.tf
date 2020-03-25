@@ -23,10 +23,20 @@ variable "domain" {
   type        = string
 }
 
+variable "api_cache" {
+  description = "Configures API cache"
+  type = object({
+    account   = string
+    namespace = string
+    token     = string
+  })
+}
+
 variable "feature_flags" {
   description = "Configures feature flags"
   type        = string
 }
+
 
 ### REVIEW
 
