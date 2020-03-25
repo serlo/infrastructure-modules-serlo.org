@@ -34,8 +34,6 @@ resource "kubernetes_deployment" "server" {
   }
 
   spec {
-    replicas = var.app_replicas
-
     selector {
       match_labels = {
         app = local.name
@@ -194,6 +192,23 @@ resource "kubernetes_deployment" "server" {
           }
         }
       }
+    }
+  }
+}
+
+resource "kubernetes_horizontal_pod_autoscaler" "server" {
+  metadata {
+    name      = local.name
+    namespace = var.namespace
+  }
+
+  spec {
+    max_replicas = 15
+
+    scale_target_ref {
+      api_version = "apps/v1"
+      kind        = "Deployment"
+      name        = local.name
     }
   }
 }

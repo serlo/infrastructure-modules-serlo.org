@@ -64,10 +64,6 @@ variable "database_private_ip" {
   description = "private ip address of database"
 }
 
-variable "app_replicas" {
-  description = "Number of athene2 pods"
-}
-
 variable "php_smtp_password" {
   description = "Password for smtp"
 }

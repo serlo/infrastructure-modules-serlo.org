@@ -14,8 +14,6 @@ module "server" {
   database_password_readonly = var.server.database_readonly.password
   database_private_ip        = var.server.database.host
 
-  app_replicas = var.server.app_replicas
-
   httpd_container_limits_cpu      = var.server.resources.httpd.limits.cpu
   httpd_container_limits_memory   = var.server.resources.httpd.limits.memory
   httpd_container_requests_cpu    = var.server.resources.httpd.requests.cpu

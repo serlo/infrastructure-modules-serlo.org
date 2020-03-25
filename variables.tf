@@ -11,7 +11,6 @@ variable "image_pull_policy" {
 variable "server" {
   description = "Configuration for server"
   type = object({
-    app_replicas = number
     image_tags = object({
       httpd             = string
       php               = string
