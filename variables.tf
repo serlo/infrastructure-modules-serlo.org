@@ -80,7 +80,7 @@ variable "server" {
     enable_tracking_google_analytics = bool
     enable_tracking_matomo           = bool
     matomo_tracking_domain           = string
-  }) 
+  })
 }
 
 variable "editor_renderer" {

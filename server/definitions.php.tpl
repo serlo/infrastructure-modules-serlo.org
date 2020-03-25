@@ -70,7 +70,7 @@ $mock_email = ${enable_mail_mock};
 
 $tracking_code = '';
 if (${php_tracking_hotjar}) {
-    $tracking_code += <<<EOL
+    $tracking_code .= <<<EOL
     <script>
         (function(h,o,t,j,a,r){
             h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
@@ -84,7 +84,7 @@ if (${php_tracking_hotjar}) {
 EOL;
 }
 if (${php_tracking_google_analytics}) {
-    $tracking_code += <<<EOL
+    $tracking_code .= <<<EOL
     <script type="text/javascript">
         var disableStr='ga-disable-UA-20283862-3';if(document.cookie.indexOf(disableStr+'=true')>-1){window[disableStr]=true;}
             function gaOptout(){document.cookie=disableStr+'=true; expires=Thu, 31 Dec 2099 23:59:59 UTC; path=/';window[disableStr]=true;}
@@ -103,7 +103,7 @@ if (${php_tracking_google_analytics}) {
 EOL;
 }
 if (${php_tracking_matomo}) {
-    $tracking_code += <<<EOL
+    $tracking_code .= <<<EOL
     <!-- Matomo -->
     <script type="text/javascript">
       var _paq = window._paq || [];
