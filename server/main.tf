@@ -331,25 +331,27 @@ data "template_file" definitions_php_template {
   template = file("${path.module}/definitions.php.tpl")
 
   vars = {
-    php_recaptcha_key          = var.php_recaptcha_key
-    php_recaptcha_secret       = var.php_recaptcha_secret
-    php_smtp_password          = var.php_smtp_password
-    php_newsletter_key         = var.php_newsletter_key
-    php_tracking_switch        = var.php_tracking_switch
-    php_db_host                = var.database_private_ip
-    editor_renderer_uri        = var.editor_renderer_uri
-    legacy_editor_renderer_uri = var.legacy_editor_renderer_uri
-    hydra_admin_uri            = var.hydra_admin_uri
-    cronjob_secret             = random_string.cronjob_secret.result
-    enable_mail_mock           = var.enable_mail_mock
-    upload_secret              = var.upload_secret
-    database_username          = var.database_username_default
-    database_password          = var.database_password_default
-    api_cache_account          = var.api_cache.account
-    api_cache_namespace        = var.api_cache.namespace
-    api_cache_token            = var.api_cache.token
-    feature_flags              = var.feature_flags
-    matomo_tracking_domain     = var.matomo_tracking_domain
+    php_recaptcha_key             = var.php_recaptcha_key
+    php_recaptcha_secret          = var.php_recaptcha_secret
+    php_smtp_password             = var.php_smtp_password
+    php_newsletter_key            = var.php_newsletter_key
+    php_db_host                   = var.database_private_ip
+    editor_renderer_uri           = var.editor_renderer_uri
+    legacy_editor_renderer_uri    = var.legacy_editor_renderer_uri
+    hydra_admin_uri               = var.hydra_admin_uri
+    cronjob_secret                = random_string.cronjob_secret.result
+    enable_mail_mock              = var.enable_mail_mock
+    upload_secret                 = var.upload_secret
+    database_username             = var.database_username_default
+    database_password             = var.database_password_default
+    api_cache_account             = var.api_cache.account
+    api_cache_namespace           = var.api_cache.namespace
+    api_cache_token               = var.api_cache.token
+    feature_flags                 = var.feature_flags
+    php_tracking_hotjar           = var.php_tracking_hotjar
+    php_tracking_google_analytics = var.php_tracking_google_analytics
+    php_tracking_matomo           = var.php_tracking_matomo
+    matomo_tracking_domain        = var.matomo_tracking_domain
   }
 }
 

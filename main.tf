@@ -9,7 +9,6 @@ module "server" {
   php_recaptcha_secret = var.server.recaptcha.secret
   php_smtp_password    = var.server.smtp_password
   php_newsletter_key   = var.server.mailchimp_key
-  php_tracking_switch  = var.server.enable_tracking
 
   database_password_default  = var.server.database.password
   database_password_readonly = var.server.database_readonly.password
@@ -45,7 +44,10 @@ module "server" {
   api_cache     = var.server.api_cache
   feature_flags = var.server.feature_flags
 
-  matomo_tracking_domain = var.server.matomo_tracking_domain
+  php_tracking_hotjar           = var.server.php_tracking_hotjar
+  php_tracking_google_analytics = var.server.php_tracking_google_analytics
+  php_tracking_matomo           = var.server.php_tracking_matomo
+  matomo_tracking_domain        = var.server.matomo_tracking_domain
 }
 
 module "editor_renderer" {
