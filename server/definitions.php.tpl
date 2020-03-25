@@ -81,7 +81,7 @@ if (${php_tracking_hotjar}) {
             a.appendChild(r);
         })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
     </script>
-    EOL;
+EOL;
 }
 if (${php_tracking_google_analytics}) {
     $tracking_code += <<<EOL
@@ -100,7 +100,7 @@ if (${php_tracking_google_analytics}) {
         setTimeout("timeElapsed()",3e4);
         window.addEventListener?window.addEventListener("scroll",testScroll,false):window.attachEvent("onScroll",testScroll);
     </script>
-    EOL;
+EOL;
 }
 if (${php_tracking_matomo}) {
     $tracking_code += <<<EOL
@@ -119,7 +119,7 @@ if (${php_tracking_matomo}) {
       })();
     </script>
     <!-- End Matomo Code -->
-    EOL;
+EOL;
 }
 if ($tracking_code != '') {
     $tracking = [
