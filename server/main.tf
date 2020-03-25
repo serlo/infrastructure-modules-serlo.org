@@ -194,6 +194,13 @@ resource "kubernetes_deployment" "server" {
       }
     }
   }
+
+  # Ignore changes to number of replicas since we have autoscaling enabled
+  lifecycle {
+    ignore_changes = [
+      spec.0.replicas
+    ]
+  }
 }
 
 resource "kubernetes_horizontal_pod_autoscaler" "server" {
