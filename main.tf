@@ -44,9 +44,9 @@ module "server" {
   api_cache     = var.server.api_cache
   feature_flags = var.server.feature_flags
 
-  php_tracking_hotjar           = var.server.php_tracking_hotjar
-  php_tracking_google_analytics = var.server.php_tracking_google_analytics
-  php_tracking_matomo           = var.server.php_tracking_matomo
+  php_tracking_hotjar           = var.server.enable_tracking_hotjar
+  php_tracking_google_analytics = var.server.enable_tracking_google_analytics
+  php_tracking_matomo           = var.server.enable_tracking_matomo
   matomo_tracking_domain        = var.server.matomo_tracking_domain
 }
 
