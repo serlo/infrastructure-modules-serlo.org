@@ -76,6 +76,8 @@ variable "server" {
       namespace = string
       token     = string
     })
+
+    matomo_tracking_domain = string
   })
 }
 
@@ -84,18 +86,6 @@ variable "editor_renderer" {
   type = object({
     app_replicas = number
     image_tag    = string
-  })
-}
-
-variable "matomo" {
-  description = "Configuration for Matomo"
-  type = object({
-    app_replicas      = number
-    image_tag         = string
-    database_user     = string
-    database_password = string
-    database_host     = string
-    database_name     = string
   })
 }
 
