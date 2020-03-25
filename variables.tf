@@ -51,7 +51,6 @@ variable "server" {
     smtp_password = string
     mailchimp_key = string
 
-    enable_tracking   = bool
     enable_basic_auth = bool
     enable_cronjobs   = bool
     enable_mail_mock  = bool
@@ -76,6 +75,11 @@ variable "server" {
       namespace = string
       token     = string
     })
+
+    enable_tracking_hotjar           = bool
+    enable_tracking_google_analytics = bool
+    enable_tracking_matomo           = bool
+    matomo_tracking_domain           = string
   })
 }
 

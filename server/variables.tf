@@ -72,10 +72,6 @@ variable "php_smtp_password" {
   description = "Password for smtp"
 }
 
-variable "php_tracking_switch" {
-  description = "Flag whether to activate tracking or not -> usually only set to true in production"
-}
-
 variable "php_recaptcha_key" {
   description = "Key for recaptcha"
 }
@@ -156,4 +152,24 @@ variable "enable_mail_mock" {
 variable "enable_basic_auth" {
   type        = bool
   description = "enables basic auth to avoid indexing"
+}
+
+variable "php_tracking_hotjar" {
+  type        = bool
+  description = "Enable hotjar tracking -> usually only set to true in production"
+}
+
+variable "php_tracking_google_analytics" {
+  type        = bool
+  description = "Enable google analytics tracking -> usually only set to true in production"
+}
+
+variable "php_tracking_matomo" {
+  type        = bool
+  description = "Enable matomo tracking"
+}
+
+variable "matomo_tracking_domain" {
+  type        = string
+  description = "base domain name of the matomo tracking url"
 }
