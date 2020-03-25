@@ -3,11 +3,6 @@ variable "namespace" {
   type        = string
 }
 
-variable "image_pull_policy" {
-  description = "Image pull policy"
-  type        = string
-}
-
 variable "image_tags" {
   description = "Docker image tags to use"
   type = object({
@@ -16,6 +11,11 @@ variable "image_tags" {
     migrate           = string
     notifications_job = string
   })
+}
+
+variable "image_pull_policy" {
+  description = "Image pull policy"
+  type        = string
 }
 
 variable "domain" {
@@ -78,46 +78,6 @@ variable "php_recaptcha_secret" {
 
 variable "php_newsletter_key" {
   description = "Key for newsletter"
-}
-
-variable "httpd_container_limits_cpu" {
-  type        = string
-  description = "resources limits cpu for httpd container"
-}
-
-variable "httpd_container_limits_memory" {
-  type        = string
-  description = "resources limits memory for httpd container"
-}
-
-variable "httpd_container_requests_cpu" {
-  type        = string
-  description = "resources requests cpu for httpd container"
-}
-
-variable "httpd_container_requests_memory" {
-  type        = string
-  description = "resources requests memory for httpd container"
-}
-
-variable "php_container_limits_cpu" {
-  type        = string
-  description = "resources limits cpu for php container"
-}
-
-variable "php_container_limits_memory" {
-  type        = string
-  description = "resources limits memory for php container"
-}
-
-variable "php_container_requests_cpu" {
-  type        = string
-  description = "resources requests cpu for php container"
-}
-
-variable "php_container_requests_memory" {
-  type        = string
-  description = "resources requests memory for httpd container"
 }
 
 variable "editor_renderer_uri" {

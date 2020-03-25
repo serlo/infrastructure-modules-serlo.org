@@ -78,13 +78,13 @@ resource "kubernetes_deployment" "server" {
 
           resources {
             limits {
-              cpu    = var.httpd_container_limits_cpu
-              memory = var.httpd_container_limits_memory
+              cpu    = "375m"
+              memory = "150Mi"
             }
 
             requests {
-              cpu    = var.httpd_container_requests_cpu
-              memory = var.httpd_container_requests_memory
+              cpu    = "250m"
+              memory = "100Mi"
             }
           }
 
@@ -142,13 +142,13 @@ resource "kubernetes_deployment" "server" {
 
           resources {
             limits {
-              cpu    = var.php_container_limits_cpu
-              memory = var.php_container_limits_memory
+              cpu    = "1125m"
+              memory = "300Mi"
             }
 
             requests {
-              cpu    = var.php_container_requests_cpu
-              memory = var.php_container_requests_memory
+              cpu    = "750m"
+              memory = "200Mi"
             }
           }
         }

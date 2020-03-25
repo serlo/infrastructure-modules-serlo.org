@@ -1,12 +1,31 @@
-resource "kubernetes_service" "editor-renderer_service" {
+locals {
+  name = "editor-renderer"
+}
+
+variable "namespace" {
+  description = "Kubernetes namespace to use"
+  type        = string
+}
+
+variable "image_tag" {
+  description = "Docker image tag to use"
+  type        = string
+}
+
+variable "image_pull_policy" {
+  description = "image pull policy"
+  type        = string
+}
+
+resource "kubernetes_service" "editor_renderer" {
   metadata {
-    name      = "editor-renderer-service"
+    name      = local.name
     namespace = var.namespace
   }
 
   spec {
     selector = {
-      app = kubernetes_deployment.editor-renderer_deployment.metadata[0].labels.app
+      app = local.name
     }
 
     port {
@@ -18,36 +37,51 @@ resource "kubernetes_service" "editor-renderer_service" {
   }
 }
 
-resource "kubernetes_deployment" "editor-renderer_deployment" {
+output "service_name" {
+  value = kubernetes_service.editor_renderer.spec[0].cluster_ip
+}
+
+output "service_uri" {
+  value = "http://${kubernetes_service.editor_renderer.spec[0].cluster_ip}:${kubernetes_service.editor_renderer.spec[0].port[0].port}"
+}
+
+resource "kubernetes_deployment" "editor_renderer" {
   metadata {
-    name      = "editor-renderer-app"
+    name      = local.name
     namespace = var.namespace
 
     labels = {
-      app = "editor-renderer"
+      app = local.name
     }
   }
 
   spec {
-    replicas = var.app_replicas
-
     selector {
       match_labels = {
-        app = "editor-renderer"
+        app = local.name
+      }
+    }
+
+    strategy {
+      type = "RollingUpdate"
+
+      rolling_update {
+        max_surge       = "1"
+        max_unavailable = "1"
       }
     }
 
     template {
       metadata {
         labels = {
-          app = "editor-renderer"
+          app = local.name
         }
       }
 
       spec {
         container {
           image             = "eu.gcr.io/serlo-shared/serlo-org-editor-renderer:${var.image_tag}"
-          name              = "editor-renderer-container"
+          name              = local.name
           image_pull_policy = var.image_pull_policy
 
           liveness_probe {
@@ -62,17 +96,41 @@ resource "kubernetes_deployment" "editor-renderer_deployment" {
 
           resources {
             limits {
-              cpu    = var.container_limits_cpu
-              memory = var.container_limits_memory
+              cpu    = "375m"
+              memory = "150Mi"
             }
 
             requests {
-              cpu    = var.container_requests_cpu
-              memory = var.container_requests_memory
+              cpu    = "250m"
+              memory = "100Mi"
             }
           }
         }
       }
+    }
+  }
+
+  # Ignore changes to number of replicas since we have autoscaling enabled
+  lifecycle {
+    ignore_changes = [
+      spec.0.replicas
+    ]
+  }
+}
+
+resource "kubernetes_horizontal_pod_autoscaler" "editor_renderer" {
+  metadata {
+    name      = local.name
+    namespace = var.namespace
+  }
+
+  spec {
+    max_replicas = 5
+
+    scale_target_ref {
+      api_version = "apps/v1"
+      kind        = "Deployment"
+      name        = local.name
     }
   }
 }

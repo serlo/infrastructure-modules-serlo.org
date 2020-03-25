@@ -1,8 +1,7 @@
 module "server" {
-  source     = "./server"
-  image_tags = var.server.image_tags
-
+  source            = "./server"
   namespace         = var.namespace
+  image_tags        = var.server.image_tags
   image_pull_policy = var.image_pull_policy
 
   php_recaptcha_key    = var.server.recaptcha.key
@@ -13,16 +12,6 @@ module "server" {
   database_password_default  = var.server.database.password
   database_password_readonly = var.server.database_readonly.password
   database_private_ip        = var.server.database.host
-
-  httpd_container_limits_cpu      = var.server.resources.httpd.limits.cpu
-  httpd_container_limits_memory   = var.server.resources.httpd.limits.memory
-  httpd_container_requests_cpu    = var.server.resources.httpd.requests.cpu
-  httpd_container_requests_memory = var.server.resources.httpd.requests.memory
-
-  php_container_limits_cpu      = var.server.resources.php.limits.cpu
-  php_container_limits_memory   = var.server.resources.php.limits.memory
-  php_container_requests_cpu    = var.server.resources.php.requests.cpu
-  php_container_requests_memory = var.server.resources.php.requests.memory
 
   domain = var.server.domain
 
@@ -49,30 +38,25 @@ module "server" {
 }
 
 module "editor_renderer" {
-  source       = "./editor-renderer"
-  image_tag    = var.editor_renderer.image_tag
-  namespace    = var.namespace
-  app_replicas = var.editor_renderer.app_replicas
+  source            = "./editor-renderer"
+  namespace         = var.namespace
+  image_tag         = var.editor_renderer.image_tag
+  image_pull_policy = var.image_pull_policy
 }
 
 module "legacy_editor_renderer" {
-  source       = "./legacy-editor-renderer"
-  image_tag    = var.legacy_editor_renderer.image_tag
-  namespace    = var.namespace
-  app_replicas = var.legacy_editor_renderer.app_replicas
+  source            = "./legacy-editor-renderer"
+  namespace         = var.namespace
+  image_tag         = var.legacy_editor_renderer.image_tag
+  image_pull_policy = var.image_pull_policy
 }
 
 module "varnish" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//varnish?ref=5a85fc7fdc78d9f61b92700d5a0a1b044ec0af67"
+  source = "github.com/serlo/infrastructure-modules-shared.git//varnish?ref=72602f7e160e26847d854e2f5f89e6929bde115c"
 
-  namespace      = var.namespace
-  app_replicas   = var.varnish.app_replicas
-  backend_ip     = module.server.service_name
-  image          = var.varnish.image
-  varnish_memory = var.varnish.memory
-
-  resources_limits_cpu      = "50m"
-  resources_limits_memory   = "${var.varnish.memory}i"
-  resources_requests_cpu    = "50m"
-  resources_requests_memory = "100Mi"
+  namespace                 = var.namespace
+  image_tag                 = var.varnish.image_tag
+  image_pull_policy         = var.image_pull_policy
+  host                      = module.server.service_name
+  readiness_probe_http_path = "/health.php"
 }

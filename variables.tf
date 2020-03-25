@@ -17,28 +17,6 @@ variable "server" {
       migrate           = string
       notifications_job = string
     })
-    resources = object({
-      httpd = object({
-        limits = object({
-          cpu    = string
-          memory = string
-        })
-        requests = object({
-          cpu    = string
-          memory = string
-        })
-      })
-      php = object({
-        limits = object({
-          cpu    = string
-          memory = string
-        })
-        requests = object({
-          cpu    = string
-          memory = string
-        })
-      })
-    })
 
     domain = string
 
@@ -85,24 +63,20 @@ variable "server" {
 variable "editor_renderer" {
   description = "Configuration for editor renderer"
   type = object({
-    app_replicas = number
-    image_tag    = string
+    image_tag = string
   })
 }
 
 variable "legacy_editor_renderer" {
   description = "Configuration for legacy editor renderer"
   type = object({
-    app_replicas = number
-    image_tag    = string
+    image_tag = string
   })
 }
 
 variable "varnish" {
   description = "Configuration for varnish"
   type = object({
-    app_replicas = number
-    image        = string
-    memory       = string
+    image_tag = string
   })
 }
