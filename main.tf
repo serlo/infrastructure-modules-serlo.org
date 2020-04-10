@@ -28,7 +28,7 @@ module "server" {
   database_username_default  = "serlo"
   database_username_readonly = "serlo_readonly"
 
-  api_cache     = var.server.api_cache
+  api           = var.server.api
   feature_flags = var.server.feature_flags
 
   php_tracking_hotjar           = var.server.enable_tracking_hotjar

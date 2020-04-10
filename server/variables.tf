@@ -23,12 +23,11 @@ variable "domain" {
   type        = string
 }
 
-variable "api_cache" {
-  description = "Configures API cache"
+variable "api" {
+  description = "Configures API"
   type = object({
-    account   = string
-    namespace = string
-    token     = string
+    host   = string
+    secret = string
   })
 }
 

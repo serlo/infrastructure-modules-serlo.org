@@ -45,10 +45,9 @@ $recaptcha = [
     'secret' => '${php_recaptcha_secret}',
 ];
 
-$api_cache_options = [
-    'account' => '${api_cache_account}',
-    'namespace' => '${api_cache_namespace}',
-    'token' => '${api_cache_token}',
+$api_options = [
+    'host' => '${api_host}',
+    'secret' => '${api_secret}',
 ];
 $smtp_options = [
     'name' => 'smtp.eu.sparkpostmail.com',

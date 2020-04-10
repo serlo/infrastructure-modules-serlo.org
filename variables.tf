@@ -47,10 +47,9 @@ variable "server" {
     feature_flags   = string
     hydra_admin_uri = string
 
-    api_cache = object({
-      account   = string
-      namespace = string
-      token     = string
+    api = object({
+      host   = string
+      secret = string
     })
 
     enable_tracking_hotjar           = bool

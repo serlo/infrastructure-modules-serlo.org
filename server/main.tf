@@ -366,9 +366,8 @@ data "template_file" definitions_php_template {
     upload_secret                 = var.upload_secret
     database_username             = var.database_username_default
     database_password             = var.database_password_default
-    api_cache_account             = var.api_cache.account
-    api_cache_namespace           = var.api_cache.namespace
-    api_cache_token               = var.api_cache.token
+    api_host                      = var.api.host
+    api_secret                    = var.api.secret
     feature_flags                 = var.feature_flags
     php_tracking_hotjar           = var.php_tracking_hotjar
     php_tracking_google_analytics = var.php_tracking_google_analytics
