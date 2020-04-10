@@ -78,13 +78,13 @@ resource "kubernetes_deployment" "server" {
 
           resources {
             limits {
-              cpu    = "375m"
-              memory = "150Mi"
+              cpu    = "400m"
+              memory = "400Mi"
             }
 
             requests {
-              cpu    = "250m"
-              memory = "100Mi"
+              cpu    = "200m"
+              memory = "200Mi"
             }
           }
 
@@ -142,13 +142,13 @@ resource "kubernetes_deployment" "server" {
 
           resources {
             limits {
-              cpu    = "1125m"
-              memory = "300Mi"
+              cpu    = "1500m"
+              memory = "600Mi"
             }
 
             requests {
               cpu    = "750m"
-              memory = "200Mi"
+              memory = "300Mi"
             }
           }
         }
