@@ -220,6 +220,23 @@ resource "kubernetes_horizontal_pod_autoscaler" "server" {
   }
 }
 
+resource "kubernetes_pod_disruption_budget" "server" {
+  metadata {
+    name      = local.name
+    namespace = var.namespace
+  }
+
+  spec {
+    min_available = 1
+
+    selector {
+      match_labels = {
+        app = local.name
+      }
+    }
+  }
+}
+
 resource "kubernetes_cron_job" "notifications" {
   count = var.enable_cronjobs ? 1 : 0
 

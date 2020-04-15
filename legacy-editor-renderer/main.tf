@@ -134,3 +134,20 @@ resource "kubernetes_horizontal_pod_autoscaler" "legacy_editor_renderer" {
     }
   }
 }
+
+resource "kubernetes_pod_disruption_budget" "legacy_editor_renderer" {
+  metadata {
+    name      = local.name
+    namespace = var.namespace
+  }
+
+  spec {
+    min_available = 1
+
+    selector {
+      match_labels = {
+        app = local.name
+      }
+    }
+  }
+}
