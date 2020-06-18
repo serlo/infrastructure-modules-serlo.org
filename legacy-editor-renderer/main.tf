@@ -67,7 +67,7 @@ resource "kubernetes_deployment" "legacy_editor_renderer" {
 
       rolling_update {
         max_surge       = "1"
-        max_unavailable = "1"
+        max_unavailable = "0"
       }
     }
 
@@ -131,23 +131,6 @@ resource "kubernetes_horizontal_pod_autoscaler" "legacy_editor_renderer" {
       api_version = "apps/v1"
       kind        = "Deployment"
       name        = local.name
-    }
-  }
-}
-
-resource "kubernetes_pod_disruption_budget" "legacy_editor_renderer" {
-  metadata {
-    name      = local.name
-    namespace = var.namespace
-  }
-
-  spec {
-    min_available = 1
-
-    selector {
-      match_labels = {
-        app = local.name
-      }
     }
   }
 }

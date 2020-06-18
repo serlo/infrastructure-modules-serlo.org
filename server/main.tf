@@ -45,7 +45,7 @@ resource "kubernetes_deployment" "server" {
 
       rolling_update {
         max_surge       = "1"
-        max_unavailable = "1"
+        max_unavailable = "0"
       }
     }
 
@@ -216,23 +216,6 @@ resource "kubernetes_horizontal_pod_autoscaler" "server" {
       api_version = "apps/v1"
       kind        = "Deployment"
       name        = local.name
-    }
-  }
-}
-
-resource "kubernetes_pod_disruption_budget" "server" {
-  metadata {
-    name      = local.name
-    namespace = var.namespace
-  }
-
-  spec {
-    min_available = 1
-
-    selector {
-      match_labels = {
-        app = local.name
-      }
     }
   }
 }
