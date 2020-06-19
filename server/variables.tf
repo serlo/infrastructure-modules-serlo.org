@@ -32,7 +32,12 @@ variable "api" {
 }
 
 variable "feature_flags" {
-  description = "Configures feature flags"
+  description = "Configures feature flags (array in PHP syntax)"
+  type        = string
+}
+
+variable "autoreview_taxonomy_term_ids" {
+  description = "List of sandbox taxonomy term ids (array in PHP syntax)"
   type        = string
 }
 

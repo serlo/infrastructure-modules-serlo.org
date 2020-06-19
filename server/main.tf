@@ -373,6 +373,7 @@ data "template_file" definitions_php_template {
     php_tracking_google_analytics = var.php_tracking_google_analytics
     php_tracking_matomo           = var.php_tracking_matomo
     matomo_tracking_domain        = var.matomo_tracking_domain
+    autoreview_taxonomy_term_ids  = var.autoreview_taxonomy_term_ids
   }
 }
 

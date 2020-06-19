@@ -28,8 +28,9 @@ module "server" {
   database_username_default  = "serlo"
   database_username_readonly = "serlo_readonly"
 
-  api           = var.server.api
-  feature_flags = var.server.feature_flags
+  api                          = var.server.api
+  feature_flags                = var.server.feature_flags
+  autoreview_taxonomy_term_ids = var.server.autoreview_taxonomy_term_ids
 
   php_tracking_hotjar           = var.server.enable_tracking_hotjar
   php_tracking_google_analytics = var.server.enable_tracking_google_analytics

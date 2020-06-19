@@ -23,6 +23,7 @@
 
 $env = 'production';
 
+$autoreview_taxonomy_term_ids = ${autoreview_taxonomy_term_ids};
 $featureFlags = ${feature_flags};
 $assets = [];
 
