@@ -34,6 +34,7 @@ module "server" {
 
   php_tracking_hotjar           = var.server.enable_tracking_hotjar
   php_tracking_google_analytics = var.server.enable_tracking_google_analytics
+  php_tracking_simple_analytics = var.server.enable_tracking_simple_analytics
   php_tracking_matomo           = var.server.enable_tracking_matomo
   matomo_tracking_domain        = var.server.matomo_tracking_domain
 }
