@@ -133,3 +133,8 @@ variable "matomo_tracking_domain" {
   type        = string
   description = "base domain name of the matomo tracking url"
 }
+
+variable "php_tracking_simple_analytics" {
+  type        = bool
+  description = "Enable simple analytics tracking -> usually onle set to true in production"
+}

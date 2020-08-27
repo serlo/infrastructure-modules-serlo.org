@@ -121,6 +121,12 @@ if (${php_tracking_matomo}) {
     <!-- End Matomo Code -->
 EOL;
 }
+if (${php_tracking_simple_analytics}) {
+    $tracking_code .= <<<EOL
+    <script async defer src="https://sa.serlo.org/latest.js"></script>
+    <noscript><img src="https://sa.serlo.org/noscript.gif" alt=""/></noscript>
+EOL;
+}
 if ($tracking_code != '') {
     $tracking = [
         'instances' => [

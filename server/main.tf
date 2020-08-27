@@ -372,6 +372,7 @@ data "template_file" definitions_php_template {
     php_tracking_hotjar           = var.php_tracking_hotjar
     php_tracking_google_analytics = var.php_tracking_google_analytics
     php_tracking_matomo           = var.php_tracking_matomo
+    php_tracking_simple_analytics = var.php_tracking_simple_analytics
     matomo_tracking_domain        = var.matomo_tracking_domain
     autoreview_taxonomy_term_ids  = var.autoreview_taxonomy_term_ids
   }
