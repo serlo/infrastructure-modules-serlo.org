@@ -54,7 +54,7 @@ module "legacy_editor_renderer" {
 }
 
 module "varnish" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//varnish?ref=34a6da8a720f4b8b3a381d57551f4c6bf6de1249"
+  source = "github.com/serlo/infrastructure-modules-shared.git//varnish?ref=v1.0.0"
 
   namespace                 = var.namespace
   image_tag                 = var.varnish.image_tag
