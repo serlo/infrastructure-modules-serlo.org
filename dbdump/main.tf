@@ -66,7 +66,7 @@ resource "kubernetes_secret" "dbdump" {
   }
 }
 
-data "template_file" run_sh_template {
+data "template_file" "run_sh_template" {
   template = file("${path.module}/run.sh.tpl")
 
   vars = {
