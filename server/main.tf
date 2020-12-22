@@ -349,7 +349,7 @@ resource "random_string" "cronjob_secret" {
   special = false
 }
 
-data "template_file" definitions_php_template {
+data "template_file" "definitions_php_template" {
   template = file("${path.module}/definitions.php.tpl")
 
   vars = {
@@ -378,6 +378,6 @@ data "template_file" definitions_php_template {
   }
 }
 
-data "template_file" override_httpd_conf_template {
+data "template_file" "override_httpd_conf_template" {
   template = file("${path.module}/override.httpd.conf.tpl")
 }

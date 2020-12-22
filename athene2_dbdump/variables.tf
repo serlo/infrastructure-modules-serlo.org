@@ -13,13 +13,13 @@ variable "image_pull_policy" {
   default     = "Always"
 }
 
-variable database_username_readonly {
+variable "database_username_readonly" {
   type        = string
   description = "Database username for readonly user"
   default     = "serlo_readonly"
 }
 
-variable database_password_readonly {
+variable "database_password_readonly" {
   description = "Database password for readonly user"
 }
 
