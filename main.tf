@@ -3,6 +3,7 @@ module "server" {
   namespace         = var.namespace
   image_tags        = var.server.image_tags
   image_pull_policy = var.image_pull_policy
+  node_pool         = var.node_pool
 
   php_recaptcha_key    = var.server.recaptcha.key
   php_recaptcha_secret = var.server.recaptcha.secret
@@ -44,6 +45,7 @@ module "editor_renderer" {
   namespace         = var.namespace
   image_tag         = var.editor_renderer.image_tag
   image_pull_policy = var.image_pull_policy
+  node_pool         = var.node_pool
 }
 
 module "legacy_editor_renderer" {
@@ -51,14 +53,16 @@ module "legacy_editor_renderer" {
   namespace         = var.namespace
   image_tag         = var.legacy_editor_renderer.image_tag
   image_pull_policy = var.image_pull_policy
+  node_pool         = var.node_pool
 }
 
 module "varnish" {
-  source = "github.com/serlo/infrastructure-modules-shared.git//varnish?ref=v6.0.0"
+  source = "github.com/serlo/infrastructure-modules-shared.git//varnish?ref=v11.0.0"
 
   namespace                 = var.namespace
   image_tag                 = var.varnish.image_tag
   image_pull_policy         = var.image_pull_policy
+  node_pool                 = var.node_pool
   host                      = module.server.service_name
   readiness_probe_http_path = "/health.php"
 }

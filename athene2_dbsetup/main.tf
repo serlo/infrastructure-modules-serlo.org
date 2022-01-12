@@ -30,6 +30,10 @@ resource "kubernetes_deployment" "dbsetup-cronjob" {
       }
 
       spec {
+        node_selector = {
+          "cloud.google.com/gke-nodepool" = var.node_pool
+        }
+
         container {
           image             = var.dbsetup_image
           name              = "dbsetup-container"

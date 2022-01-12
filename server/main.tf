@@ -57,6 +57,10 @@ resource "kubernetes_deployment" "server" {
       }
 
       spec {
+        node_selector = {
+          "cloud.google.com/gke-nodepool" = var.node_pool
+        }
+
         container {
           image             = "eu.gcr.io/serlo-shared/serlo-org-httpd:${var.image_tags.httpd}"
           name              = "httpd"
@@ -242,6 +246,10 @@ resource "kubernetes_cron_job" "notifications" {
         template {
           metadata {}
           spec {
+            node_selector = {
+              "cloud.google.com/gke-nodepool" = var.node_pool
+            }
+
             container {
               name  = "worker"
               image = "eu.gcr.io/serlo-shared/serlo-org-notifications-job:${var.image_tags.notifications_job}"
@@ -309,6 +317,10 @@ resource "kubernetes_cron_job" "session_gc" {
         template {
           metadata {}
           spec {
+            node_selector = {
+              "cloud.google.com/gke-nodepool" = var.node_pool
+            }
+
             container {
               name    = "worker"
               image   = "buildpack-deps:curl"

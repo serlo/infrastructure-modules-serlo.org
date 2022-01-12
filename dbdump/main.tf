@@ -22,6 +22,10 @@ resource "kubernetes_cron_job" "dbdump" {
         template {
           metadata {}
           spec {
+            node_selector = {
+              "cloud.google.com/gke-nodepool" = var.node_pool
+            }
+
             container {
               name  = "dbdump"
               image = var.image

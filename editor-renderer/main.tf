@@ -17,6 +17,11 @@ variable "image_pull_policy" {
   type        = string
 }
 
+variable "node_pool" {
+  type        = string
+  description = "Node pool to use"
+}
+
 resource "kubernetes_service" "editor_renderer" {
   metadata {
     name      = local.name
@@ -79,6 +84,10 @@ resource "kubernetes_deployment" "editor_renderer" {
       }
 
       spec {
+        node_selector = {
+          "cloud.google.com/gke-nodepool" = var.node_pool
+        }
+
         container {
           image             = "eu.gcr.io/serlo-shared/serlo-org-editor-renderer:${var.image_tag}"
           name              = local.name

@@ -13,6 +13,11 @@ variable "image_pull_policy" {
   default     = "Always"
 }
 
+variable "node_pool" {
+  type        = string
+  description = "Node pool to use"
+}
+
 variable "database_username_default" {
   type        = string
   default     = "serlo"
