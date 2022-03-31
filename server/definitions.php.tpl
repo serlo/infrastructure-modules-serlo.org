@@ -125,6 +125,22 @@ if (${php_tracking_simple_analytics}) {
     $tracking_code .= <<<EOL
     <script async defer src="https://sa.serlo.org/latest.js"></script>
     <noscript><img src="https://sa.serlo.org/noscript.gif" alt=""/></noscript>
+    <script>
+    // enable events before script is loaded
+    window.sa_event=window.sa_event||function(){
+        var a=[].slice.call(arguments);window.sa_event.q?window.sa_event.q.push(a):window.sa_event.q=[a]
+    };
+    // Report Content-API usage
+    if (URLSearchParams) {
+        const contentApiParams = ["contentOnly","hideTopbar","hideLeftSidebar","hideRightSidebar","hideBreadcrumbs","hideDiscussions","hideBanner","hideHorizon","hideFooter","fullWidth"];
+        const params = new URLSearchParams(window.location.search);
+        for (const contentApiParam of contentApiParams) {
+            if (params.has(contentApiParam)) {
+                sa_event(contentApiParam)
+            }
+        }
+    }
+    </script>
 EOL;
 }
 if ($tracking_code != '') {
