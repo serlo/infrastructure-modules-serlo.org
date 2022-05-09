@@ -130,16 +130,7 @@ if (${php_tracking_simple_analytics}) {
     window.sa_event=window.sa_event||function(){
         var a=[].slice.call(arguments);window.sa_event.q?window.sa_event.q.push(a):window.sa_event.q=[a]
     };
-    // Report Content-API usage
-    if (URLSearchParams) {
-        const contentApiParams = ["contentOnly","hideTopbar","hideLeftSidebar","hideRightSidebar","hideBreadcrumbs","hideDiscussions","hideBanner","hideHorizon","hideFooter","fullWidth"];
-        const params = new URLSearchParams(window.location.search);
-        for (const contentApiParam of contentApiParams) {
-            if (params.has(contentApiParam)) {
-                sa_event(contentApiParam)
-            }
-        }
-    }
+    sa_event('legacy-serlo-org');
     </script>
 EOL;
 }
