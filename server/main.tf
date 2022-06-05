@@ -1,6 +1,33 @@
 locals {
   name = "server"
   curl = "curl${var.enable_basic_auth ? " --user serloteam:serloteam" : ""} --data \"secret=${random_string.cronjob_secret.result}\" --verbose"
+  definitions = templatefile(
+    "${path.module}/definitions.php.tpl",
+    {
+      php_recaptcha_key             = var.php_recaptcha_key
+      php_recaptcha_secret          = var.php_recaptcha_secret
+      php_smtp_password             = var.php_smtp_password
+      php_newsletter_key            = var.php_newsletter_key
+      php_db_host                   = var.database_private_ip
+      editor_renderer_uri           = var.editor_renderer_uri
+      legacy_editor_renderer_uri    = var.legacy_editor_renderer_uri
+      hydra_admin_uri               = var.hydra_admin_uri
+      cronjob_secret                = random_string.cronjob_secret.result
+      enable_mail_mock              = var.enable_mail_mock
+      upload_secret                 = var.upload_secret
+      database_username             = var.database_username_default
+      database_password             = var.database_password_default
+      api_host                      = var.api.host
+      api_secret                    = var.api.secret
+      feature_flags                 = var.feature_flags
+      php_tracking_hotjar           = var.php_tracking_hotjar
+      php_tracking_google_analytics = var.php_tracking_google_analytics
+      php_tracking_matomo           = var.php_tracking_matomo
+      php_tracking_simple_analytics = var.php_tracking_simple_analytics
+      matomo_tracking_domain        = var.matomo_tracking_domain
+      autoreview_taxonomy_term_ids  = var.autoreview_taxonomy_term_ids
+    }
+  )
 }
 
 resource "kubernetes_service" "server" {
@@ -77,16 +104,16 @@ resource "kubernetes_deployment" "server" {
 
           env {
             name  = "HTTP_OVERRIDE_CONF_CHECKSUM"
-            value = sha256(data.template_file.override_httpd_conf_template.rendered)
+            value = sha256(file("${path.module}/override.httpd.conf.tpl"))
           }
 
           resources {
-            limits {
+            limits = {
               cpu    = "400m"
               memory = "400Mi"
             }
 
-            requests {
+            requests = {
               cpu    = "200m"
               memory = "200Mi"
             }
@@ -107,7 +134,7 @@ resource "kubernetes_deployment" "server" {
 
           env {
             name  = "DEFINITIONS_PHP_CHECKSUM"
-            value = sha256(data.template_file.definitions_php_template.rendered)
+            value = sha256(local.definitions)
           }
 
           lifecycle {
@@ -145,12 +172,12 @@ resource "kubernetes_deployment" "server" {
           }
 
           resources {
-            limits {
+            limits = {
               cpu    = "1500m"
               memory = "600Mi"
             }
 
-            requests {
+            requests = {
               cpu    = "750m"
               memory = "300Mi"
             }
@@ -341,7 +368,7 @@ resource "kubernetes_secret" "server" {
   }
 
   data = {
-    "definitions-file" = data.template_file.definitions_php_template.rendered
+    "definitions-file" = local.definitions
   }
 }
 
@@ -352,44 +379,11 @@ resource "kubernetes_config_map" "server" {
   }
 
   data = {
-    "httpd-override.conf" = data.template_file.override_httpd_conf_template.rendered
+    "httpd-override.conf" = file("${path.module}/override.httpd.conf.tpl")
   }
 }
 
 resource "random_string" "cronjob_secret" {
   length  = 32
   special = false
-}
-
-data "template_file" "definitions_php_template" {
-  template = file("${path.module}/definitions.php.tpl")
-
-  vars = {
-    php_recaptcha_key             = var.php_recaptcha_key
-    php_recaptcha_secret          = var.php_recaptcha_secret
-    php_smtp_password             = var.php_smtp_password
-    php_newsletter_key            = var.php_newsletter_key
-    php_db_host                   = var.database_private_ip
-    editor_renderer_uri           = var.editor_renderer_uri
-    legacy_editor_renderer_uri    = var.legacy_editor_renderer_uri
-    hydra_admin_uri               = var.hydra_admin_uri
-    cronjob_secret                = random_string.cronjob_secret.result
-    enable_mail_mock              = var.enable_mail_mock
-    upload_secret                 = var.upload_secret
-    database_username             = var.database_username_default
-    database_password             = var.database_password_default
-    api_host                      = var.api.host
-    api_secret                    = var.api.secret
-    feature_flags                 = var.feature_flags
-    php_tracking_hotjar           = var.php_tracking_hotjar
-    php_tracking_google_analytics = var.php_tracking_google_analytics
-    php_tracking_matomo           = var.php_tracking_matomo
-    php_tracking_simple_analytics = var.php_tracking_simple_analytics
-    matomo_tracking_domain        = var.matomo_tracking_domain
-    autoreview_taxonomy_term_ids  = var.autoreview_taxonomy_term_ids
-  }
-}
-
-data "template_file" "override_httpd_conf_template" {
-  template = file("${path.module}/override.httpd.conf.tpl")
 }

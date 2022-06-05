@@ -104,12 +104,12 @@ resource "kubernetes_deployment" "legacy_editor_renderer" {
           }
 
           resources {
-            limits {
+            limits = {
               cpu    = "375m"
               memory = "150Mi"
             }
 
-            requests {
+            requests = {
               cpu    = "250m"
               memory = "100Mi"
             }

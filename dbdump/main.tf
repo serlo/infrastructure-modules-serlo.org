@@ -66,21 +66,18 @@ resource "kubernetes_secret" "dbdump" {
   }
 
   data = {
-    "run.sh" = data.template_file.run_sh_template.rendered
-  }
-}
+    "run.sh" = templatefile(
+      "${path.module}/run.sh.tpl",
+      {
+        database_host     = var.database.host
+        database_port     = var.database.port
+        database_username = var.database.username
+        database_password = var.database.password
+        database_name     = var.database.name
 
-data "template_file" "run_sh_template" {
-  template = file("${path.module}/run.sh.tpl")
-
-  vars = {
-    database_host     = var.database.host
-    database_port     = var.database.port
-    database_username = var.database.username
-    database_password = var.database.password
-    database_name     = var.database.name
-
-    bucket_url                 = var.bucket.url
-    bucket_service_account_key = var.bucket.service_account_key
+        bucket_url                 = var.bucket.url
+        bucket_service_account_key = var.bucket.service_account_key
+      }
+    )
   }
 }
