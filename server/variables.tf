@@ -6,10 +6,9 @@ variable "namespace" {
 variable "image_tags" {
   description = "Docker image tags to use"
   type = object({
-    httpd             = string
-    php               = string
-    migrate           = string
-    notifications_job = string
+    httpd   = string
+    php     = string
+    migrate = string
   })
 }
 

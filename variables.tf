@@ -17,10 +17,9 @@ variable "server" {
   description = "Configuration for server"
   type = object({
     image_tags = object({
-      httpd             = string
-      php               = string
-      migrate           = string
-      notifications_job = string
+      httpd   = string
+      php     = string
+      migrate = string
     })
 
     domain = string
