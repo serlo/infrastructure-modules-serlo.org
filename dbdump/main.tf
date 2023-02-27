@@ -18,7 +18,6 @@ resource "kubernetes_cron_job" "dbdump" {
     job_template {
       metadata {}
       spec {
-        backoff_limit = 2
         template {
           metadata {}
           spec {
@@ -29,55 +28,39 @@ resource "kubernetes_cron_job" "dbdump" {
             container {
               name  = "dbdump"
               image = var.image
-              args  = ["/bin/sh", "/tmp/run.sh"]
 
-              volume_mount {
-                mount_path = "/tmp/run.sh"
-                sub_path   = "run.sh"
-                name       = "run-sh-volume"
-                read_only  = true
+              env {
+                name  = "MYSQL_HOST"
+                value = var.mysql.host
               }
-            }
-
-            volume {
-              name = "run-sh-volume"
-
-              secret {
-                secret_name = kubernetes_secret.dbdump.metadata.0.name
-
-                items {
-                  key  = "run.sh"
-                  path = "run.sh"
-                  mode = "0444"
-                }
+              env {
+                name  = "MYSQL_USER"
+                value = var.mysql.username
+              }
+              env {
+                name  = "MYSQL_PASSWORD"
+                value = var.mysql.password
+              }
+              env {
+                name  = "POSTGRES_HOST"
+                value = var.postgres.host
+              }
+              env {
+                name  = "POSTGRES_PASSWORD_READONLY"
+                value = var.postgres.password
+              }
+              env {
+                name  = "BUCKET_URL"
+                value = var.bucket.url
+              }
+              env {
+                name  = "BUCKET_SERVICE_ACCOUNT_KEY"
+                value = var.bucket.service_account_key
               }
             }
           }
         }
       }
     }
-  }
-}
-
-resource "kubernetes_secret" "dbdump" {
-  metadata {
-    name      = local.name
-    namespace = var.namespace
-  }
-
-  data = {
-    "run.sh" = templatefile(
-      "${path.module}/run.sh.tpl",
-      {
-        database_host     = var.database.host
-        database_port     = var.database.port
-        database_username = var.database.username
-        database_password = var.database.password
-        database_name     = var.database.name
-
-        bucket_url                 = var.bucket.url
-        bucket_service_account_key = var.bucket.service_account_key
-      }
-    )
   }
 }
