@@ -1,52 +1,40 @@
 variable "namespace" {
-  type        = string
-  description = "Namespace for this module."
+  type = string
 }
 
-variable "dbsetup_image" {
-  description = "image name of dbsetup"
-  default     = "eu.gcr.io/serlo-shared/athene2-dbsetup-cronjob:latest"
-}
-
-variable "image_pull_policy" {
-  description = "pull policy for the container image"
-  default     = "Always"
+variable "image" {
+  default = "eu.gcr.io/serlo-shared/athene2-dbsetup-cronjob:latest"
 }
 
 variable "node_pool" {
+  type = string
+}
+
+
+variable "mysql" {
+  type = object({
+    host     = string
+    username = string
+    password = string
+  })
+}
+
+variable "postgres" {
+  type = object({
+    host     = string
+    password = string
+  })
+}
+
+variable "bucket" {
+  type = object({
+    url                  = string
+    service_account_key  = string
+    service_account_name = string
+  })
+}
+
+variable "schedule" {
+  description = "Crontab-like schedule for the cron job"
   type        = string
-  description = "Node pool to use"
-}
-
-variable "database_username_default" {
-  type        = string
-  default     = "serlo"
-  description = "Database username for default user that has also write privilege"
-}
-
-variable "database_password_default" {
-  description = "Database password for default user that has also write privilege"
-}
-
-variable "database_host" {
-  description = "Athene2 database host"
-}
-
-variable "gcloud_bucket_url" {
-  description = "Bucket URL for anonymous database dump should be set only in gcloud environment"
-  default     = "gs://anonymous-data"
-}
-
-variable "gcloud_service_account_key" {
-  description = "Private key of gcloud service account to access the anonymous dtabase dump"
-}
-
-variable "gcloud_service_account_name" {
-  description = "Name of the gcloud service account to access the anonymous database dump"
-}
-
-variable "feature_minikube" {
-  type        = bool
-  description = "Feature minikube by default it is false"
-  default     = false
 }
