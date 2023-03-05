@@ -1,82 +1,68 @@
-resource "kubernetes_deployment" "dbsetup-cronjob" {
+locals {
+  name = "dbsetup"
+}
+
+resource "kubernetes_cron_job" "dbsetup" {
   metadata {
-    name      = "dbsetup-cronjob"
+    name      = local.name
     namespace = var.namespace
 
     labels = {
-      app = "content-provider"
+      app = local.name
     }
   }
 
   spec {
-    replicas = "1"
-
-    selector {
-      match_labels = {
-        app = "dbsetup"
-      }
-    }
-
-    strategy {
-      type = "Recreate"
-    }
-
-    template {
-      metadata {
-        labels = {
-          app  = "dbsetup"
-          name = "dbsetup"
-        }
-      }
-
+    concurrency_policy = "Forbid"
+    schedule           = var.schedule
+    job_template {
+      metadata {}
       spec {
-        node_selector = {
-          "cloud.google.com/gke-nodepool" = var.node_pool
-        }
-
-        container {
-          image             = var.dbsetup_image
-          name              = "dbsetup-container"
-          image_pull_policy = var.image_pull_policy
-
-          env {
-            name  = "GCLOUD_BUCKET_URL"
-            value = var.gcloud_bucket_url
-          }
-
-          env {
-            name  = "GCLOUD_SERVICE_ACCOUNT_NAME"
-            value = var.gcloud_service_account_name
-          }
-
-          env {
-            name = "GCLOUD_SERVICE_ACCOUNT_KEY"
-            value_from {
-              secret_key_ref {
-                key  = "credential.json"
-                name = kubernetes_secret.dbsetup_secret.metadata[0].name
-              }
+        template {
+          metadata {}
+          spec {
+            node_selector = {
+              "cloud.google.com/gke-nodepool" = var.node_pool
             }
-          }
 
-          env {
-            name  = "ATHENE2_DATABASE_HOST"
-            value = var.database_host
-          }
-          env {
-            name  = "ATHENE2_DATABASE_PORT"
-            value = "3306"
-          }
-          env {
-            name  = "ATHENE2_DATABASE_USER"
-            value = var.database_username_default
-          }
-          env {
-            name = "ATHENE2_DATABASE_PASSWORD"
-            value_from {
-              secret_key_ref {
-                key  = "database-password-default"
-                name = kubernetes_secret.dbsetup_secret.metadata[0].name
+            container {
+              name  = local.name
+              image = var.image
+              env {
+                name  = "MYSQL_HOST"
+                value = var.mysql.host
+              }
+              env {
+                name  = "MYSQL_USER"
+                value = var.mysql.username
+              }
+              env {
+                name  = "MYSQL_PASSWORD"
+                value = var.mysql.password
+              }
+              env {
+                name  = "MYSQL_PORT"
+                value = "3306"
+              }
+              env {
+                name  = "POSTGRES_HOST"
+                value = var.postgres.host
+              }
+              env {
+                name  = "POSTGRES_PASSWORD"
+                value = var.postgres.password
+              }
+              env {
+                name  = "GCLOUD_BUCKET_URL"
+                value = var.bucket.url
+              }
+              env {
+                name  = "GCLOUD_SERVICE_ACCOUNT_NAME"
+                value = var.bucket.service_account_name
+              }
+              env {
+                name  = "GCLOUD_SERVICE_ACCOUNT_KEY"
+                value = var.bucket.service_account_key
               }
             }
           }
@@ -93,8 +79,8 @@ resource "kubernetes_secret" "dbsetup_secret" {
   }
 
   data = {
-    "database-password-default" = var.database_password_default
-    "credential.json"           = var.gcloud_service_account_key
+    "database-password-default" = var.mysql.password
+    "credential.json"           = var.bucket.service_account_key
   }
 
   type = "Opaque"
