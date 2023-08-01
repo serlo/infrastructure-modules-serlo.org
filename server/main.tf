@@ -251,7 +251,7 @@ resource "kubernetes_horizontal_pod_autoscaler" "server" {
   }
 }
 
-resource "kubernetes_cron_job" "session_gc" {
+resource "kubernetes_cron_job_v1" "session_gc" {
   count = var.enable_cronjobs ? 1 : 0
 
   metadata {
