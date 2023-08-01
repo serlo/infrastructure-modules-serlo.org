@@ -2,7 +2,7 @@ locals {
   name = "dbdump"
 }
 
-resource "kubernetes_cron_job" "dbdump" {
+resource "kubernetes_cron_job_v1" "dbdump" {
   metadata {
     name      = local.name
     namespace = var.namespace
